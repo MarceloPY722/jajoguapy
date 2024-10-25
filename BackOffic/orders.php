@@ -76,7 +76,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="/jajoguapyv2/BackOffic/index.php">Continuar Comprando</a>
+                                <a href="/jajoguapy/BackOffic/index.php">Continuar Comprando</a>
                             </div>
                         </div>
                     </div>
@@ -108,20 +108,15 @@
             </div>
         </div>
     </section>
-    <!-- Shopping Cart Section End -->
-
-    <!-- Footer Section Begin -->
+   
     <footer class="footer">
-        <!-- ... (footer content remains unchanged) ... -->
+      
     </footer>
     
     <div class="search-model">
-        <!-- ... (search model content remains unchanged) ... -->
+  
     </div>
-    <!-- Search End -->
-
-    <!-- Js Plugins -->
+   
     <?php include './include/footer.php'?>
-
     <script src="./js/cart.js"></script>
     <script src="./js/pay.js"></script>

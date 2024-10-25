@@ -10,12 +10,16 @@ $data = $req->fetch();
 $cat = $data['categoria_id'];
 if(isset($_POST['sub'])){
   $Q = $_POST['qte'];
-  $qr = $bd->prepare("BEGIN;
-                      INSERT INTO pedidos(fecha, usuario_id) VALUES(?, ?);
-                      INSERT INTO pedidos_productos(producto_id, pedido_id, cantidad) VALUES(?, LAST_INSERT_ID(), ?);
-                      COMMIT;");
-  $qr->execute([$date, $idu, $id, $Q]);
-  header('location: orders.php');
+  if ($Q > $data['cantidad_stock']) {
+    echo "<script>alert('Este Producto no esta disponible por stock');</script>";
+  } else {
+    $qr = $bd->prepare("BEGIN;
+                        INSERT INTO pedidos(fecha, usuario_id) VALUES(?, ?);
+                        INSERT INTO pedidos_productos(producto_id, pedido_id, cantidad) VALUES(?, LAST_INSERT_ID(), ?);
+                        COMMIT;");
+    $qr->execute([$date, $idu, $id, $Q]);
+    header('location: orders.php');
+  }
 }
 ?>
     <!-- Shop Details Section Begin -->
@@ -66,14 +70,26 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>₲<?=$data['precio_venta']?></h3>
+                            <h3>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?>
+                            </h3>
+                            <div class="status">
+                            <?php if ($data['cantidad_stock'] > 0): ?>
+                                    <span class="stock-status available">Disponible</span>
+                                <?php else: ?>
+                                    <span class="stock-status out-of-stock">Agotado</span>
+                                <?php endif; ?>
+                            </div>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         <input name="qte" type="text" value="1">
                                     </div>
                                 </div>
-                                <a href=""><button class="primary-btn" name="sub">Añadir al carrito</button></a>
+                                <?php if ($data['cantidad_stock'] > 0): ?>
+                                    <a href=""><button class="primary-btn" name="sub">Añadir al carrito</button></a>
+                                <?php else: ?>
+                                    <a href=""><button class="primary-btn" name="sub" disabled>Añadir al carrito</button></a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -121,7 +137,7 @@ if(isset($_POST['sub'])){
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="../admin/img/<?=$data['imagen']?>">
-                            <span class="label">Nuevo</span>
+                            <span class="label"></span>
                         </div>
                         <div class="product__item__text">
                             <h6><?=$data['nombre']?></h6>
@@ -133,7 +149,13 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5><?=$data['precio_venta']?>₲</h5>
+                            <h5>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?>
+                                <?php if ($data['cantidad_stock'] > 0): ?>
+                                    <span class="stock-status available">Disponible</span>
+                                <?php else: ?>
+                                    <span class="stock-status out-of-stock">Agotado</span>
+                                <?php endif; ?>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -204,7 +226,28 @@ if(isset($_POST['sub'])){
             </form>
         </div>
     </div>
-    
-
-
     <?php include './include/footer.php'?>
+    <style>
+        .status{
+           margin-right: 60px;
+           margin-bottom: 20px;
+        }
+
+        .stock-status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .available {
+            background-color: green;
+            color: white;
+        }
+
+        .out-of-stock {
+            background-color: red;
+            color: white;
+        }
+    </style>

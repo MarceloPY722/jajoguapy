@@ -3,18 +3,10 @@
 <?php include '../include/header.php'; ?>
 <?php $title = "appros"; ?>
 
-
 <div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
   <div class="main-content">
-
-    <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
     <hr />
 
     <div class="row">
@@ -52,18 +44,18 @@
           ]
         });
 
-        // Initalize Select Dropdown after DataTables is created
+    
         $table3.closest('.dataTables_wrapper').find('select').select2({
           minimumResultsForSearch: -1
         });
 
-        // Setup - add a text input to each footer cell
+        
         $('#table-3 tfoot th').each(function() {
           var title = $('#table-3 thead th').eq($(this).index()).text();
           $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
         });
 
-        // Apply the search
+      
         table3.columns().every(function() {
           var that = this;
 
@@ -91,24 +83,24 @@
         </thead>
         <tbody>
           <?php
-					$req =  $bd->query("SELECT a.*,f.nomf,f.telephone FROM appros a,fournisseurs f
-                             WHERE a.four_id=f.id");
+					$req =  $bd->query("SELECT a.*, f.nombre, f.telefono FROM abastecimientos a, proveedores f
+                             WHERE a.proveedor_id = f.id");
 					while($data = $req->fetch()):
 				?>
           <tr class="gradeA">
             <td><?= $data['id'] ?></td>
-            <td><?= $data['num'] ?></td>
-            <td><?= $data['date'] ?></td>
-            <td><?= $data['nomf'] ?></td>
-            <td><?= $data['telephone'] ?></td>
+            <td><?= $data['numero'] ?></td>
+            <td><?= $data['fecha'] ?></td>
+            <td><?= $data['nombre'] ?></td>
+            <td><?= $data['telefono'] ?></td>
             <td>
-              <a href="/Jajoguapy/admin/suministro/update.php?id=<?= $data['id'] ?>"
+              <a href="/jajoguapy/admin/suministro/update.php?id=<?= $data['id'] ?>"
                 class="btn btn-default btn-sm btn-icon icon-left">
                 <i class="entypo-pencil"></i>
                 Edit
               </a>
 
-              <a href="/Jajoguapy/admin/suministro/delete.php?id=<?= $data['id'] ?>"
+              <a href="/jajoguapy/admin/suministro/delete.php?id=<?= $data['id'] ?>"
                 class="btn btn-danger btn-sm btn-icon icon-left">
                 <i class="entypo-cancel"></i>
                 Eliminar
@@ -133,6 +125,5 @@
     </div>
   </div>
 </div>
-
 
 <?php include '../include/footer.php'; ?>
