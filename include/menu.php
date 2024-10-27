@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Envío gratuito, devolución de 30 días o garantía de reembolso.</p>
+                            <p>Inicie Sesion para disfrutar de la totalidad de las funciones.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-mdproduct spad-5">
@@ -29,11 +29,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="./index.php">Inicio</a></li>
-                            <li><a href="#categories spad">Oferta</a></li>
-                            <li><a href="#blogs">Blog</a></li>
-                            <li><a href="">Tienda</a></li>
-                            <li><a href="">Contactos</a></li>
-                            
+                            <li><a href="#">Oferta</a></li>
                         </ul>
                     </nav>
                 </div>

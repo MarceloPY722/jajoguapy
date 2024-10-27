@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="boton">
-        <a href="#" class="primary-btn">Ver Mas Productos</a>
+        <a href="./tienda.php" class="primary-btn">Ver Mas Productos</a>
         </div>
         
     </section>

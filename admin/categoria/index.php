@@ -90,16 +90,22 @@
             <td><?= $data['id'] ?></td>
             <td><?= $data['nombre'] ?></td>
             <td>
-              <a href="/Jajoguapy/admin/categoria/update.php?id=<?= $data['id'] ?>"
+              <a href="/jajoguapy/admin/categoria/update.php?id=<?= $data['id'] ?>"
                 class="btn btn-default btn-sm btn-icon icon-left">
                 <i class="entypo-pencil"></i>
                 Editar
               </a>
 
-              <a href="/Jajoguapy/admin/categoria/delete.php?id=<?= $data['id'] ?>"
+              <a href="/jajoguapy/admin/categoria/delete.php?id=<?= $data['id'] ?>"
                 class="btn btn-danger btn-sm btn-icon icon-left">
                 <i class="entypo-cancel"></i>
                 Eliminar
+              </a>
+
+              <a href="/jajoguapy/admin/categoria/ver_productos.php?id=<?= $data['id'] ?>"
+                class="btn btn-info btn-sm btn-icon icon-left">
+                <i class="entypo-eye"></i>
+                Ver
               </a>
             </td>
           </tr>
@@ -118,11 +124,7 @@
     </div>
 
 
-    <!-- Footer -->
-    <footer class="main">
 
-      &copy; 2024 <strong>Jajogua</strong> | Panel Admin
-    </footer>
   </div>
 
 

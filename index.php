@@ -1,14 +1,7 @@
 <?php include './include/head.php'?>
 <?php include './include/cnx.php'?>
-
-    <!-- Page Preloder -->
-    <!-- Offcanvas Menu End -->
-
-    <!-- Header Section Begin -->
-    <?php include './include/menu.php'?>
-    <!-- Header Section End -->
-
-    <!-- Hero Section Begin -->
+<?php include './include/menu.php'?>
+    
     <section class="hero">
         <div class="hero__slider owl-carousel">
             <div class="hero__items set-bg" data-setbg="assets/o.jpg">
@@ -76,7 +69,7 @@
 				?>
 
 
-                <!--Seccion de productos agregados desde el dashboard-->
+                <!--Seccion de productos nuevos agregados desde el dashboard-->
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="admin/img/<?=$data['imagen']?>">
@@ -92,7 +85,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5><?=$data['precio_venta']?>₲</h5>
+                            <h5>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h5>
                         </div>
                     </div>
                 </div>
@@ -100,9 +93,7 @@
             </div>
         </div>
     </section>
-    <!-- Product Section End -->
-
-    <!-- Categories Section Begin -->
+    
     <section class="categories spad">
         <div class="container">
             <div class="row">
@@ -198,6 +189,7 @@
                 </div>
             </div>
         </div>
+        
     </footer>
     
     <style>
@@ -245,6 +237,9 @@
     font-size: 2rem;
 
 }
-    </style>
 
-    <?php include './include/footer.php'?>
+
+</style>
+
+
+<?php include './include/footer.php'?>

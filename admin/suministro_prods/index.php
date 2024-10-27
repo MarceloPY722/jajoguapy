@@ -1,8 +1,7 @@
 <?php include '../include/session.php'; ?>
 <?php include '../include/connexion.php'; ?>
 <?php include '../include/header.php'; ?>
-<?php $title = "appros_prods"; ?>
-
+<?php $title = "abastecimientos_productos"; ?>
 
 <div class="page-container">
   <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
@@ -34,7 +33,6 @@
           <span data-dismiss="alert" class="close">&times;</span>
         </div>
         <?php endif; ?>
-
       </div>
     </div>
     <div class="row">
@@ -94,28 +92,28 @@
         </thead>
         <tbody>
           <?php
-					$req =  $bd->query("SELECT p.*,r.image,r.libelle,r.prix_achat,c.nom,f.nomf FROM
-                             appros a,fournisseurs f,appros_prods p,produits r,categories c
-                             WHERE a.four_id=f.id AND p.appro_id=a.id AND r.id=p.prod_id AND c.id=r.cat_id");
-					while($data = $req->fetch()):
-				?>
+          $req = $bd->query("SELECT p.*, r.imagen, r.nombre, r.precio_compra, c.nombre AS categoria_nombre, f.nombre AS proveedor_nombre 
+                             FROM abastecimientos a, proveedores f, abastecimientos_productos p, productos r, categorias c
+                             WHERE a.proveedor_id = f.id AND p.abastecimiento_id = a.id AND r.id = p.producto_id AND c.id = r.categoria_id");
+          while($data = $req->fetch()):
+          ?>
           <tr class="gradeA">
             <td><?= $data['id'] ?></td>
-            <td><img width="100" src="../img/<?=$data['image']?>" alt=""></td>
-            <td><?= $data['libelle'] ?></td>
-            <td><?= $data['prix_achat'] ?></td>
-            <td><?= $data['qte'] ?></td>
-            <td><?= $data['nom'] ?></td>
-            <td><?= $data['nomf'] ?></td>
+            <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt=""></td>
+            <td><?= $data['nombre'] ?></td>
+            <td><?= $data['precio_compra'] ?></td>
+            <td><?= $data['cantidad'] ?></td>
+            <td><?= $data['categoria_nombre'] ?></td>
+            <td><?= $data['proveedor_nombre'] ?></td>
             <td>
-              <a href="/Jajoguapyv2/admin/appros_prods/update.php?id=<?= $data['id'] ?>"
+              <a href="/Jajoguapyv2/admin/abastecimientos_productos/update.php?id=<?= $data['id'] ?>"
                 class="btn btn-default btn-sm btn-icon icon-left">
                 <i class="entypo-pencil"></i>
                 Editar
               </a>
-              </td>
-              <td>
-              <a href="/Jajoguapyv2/admin/appros_prods/delete.php?id=<?= $data['id'] ?>"
+            </td>
+            <td>
+              <a href="/Jajoguapyv2/admin/abastecimientos_productos/delete.php?id=<?= $data['id'] ?>"
                 class="btn btn-danger btn-sm btn-icon icon-left">
                 <i class="entypo-cancel"></i>
                 Eliminar
@@ -123,13 +121,12 @@
             </td>
           </tr>
           <?php
-					endwhile;
-				?>
+          endwhile;
+          ?>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-
 
 <?php include '../include/footer.php'; ?>

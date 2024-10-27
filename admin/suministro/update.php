@@ -1,20 +1,19 @@
 <?php include '../include/session.php'; ?>
 <?php include '../include/connexion.php'; ?>
 <?php
-$title = "appros"; 
-$id=$_GET['id'];
-$rq=$bd->prepare("select * from appros where id=?");
+$title = "abastecimientos"; 
+$id = $_GET['id'];
+$rq = $bd->prepare("select * from abastecimientos where id=?");
 $rq->execute([$id]);
 $data = $rq->fetch();
 if(isset($_POST['submit'])){
-$num = $_POST['num'];
-$date = $_POST['date'];
-$four = $_POST['four'];
-$req = $bd->prepare("update appros set num=?,date=?,four_id=? where id=?");
-$req->execute([$num,$date,$four,$id]);
-header('location: /PFF/admin/appros/index.php?msg=updated');
+    $numero = $_POST['numero'];
+    $fecha = $_POST['fecha'];
+    $proveedor = $_POST['proveedor'];
+    $req = $bd->prepare("update abastecimientos set numero=?, fecha=?, proveedor_id=? where id=?");
+    $req->execute([$numero, $fecha, $proveedor, $id]);
+    header('location: /Jajoguapy/admin/suministro/index.php?msg=updated');
 }
-
 ?>
 <?php include '../include/header.php'; ?>
 
@@ -31,53 +30,40 @@ header('location: /PFF/admin/appros/index.php?msg=updated');
     <!-- End Menu -->
     <hr />
 
-
     <div class="row">
-      <h3>Modifier une approvisionnements</h3>
+      <h3>Modificar un abastecimiento</h3>
       <br />
       <div class="card">
         <div class="card-body">
           <form method="post">
             <div class="form-group">
-              <label for="num">Num</label>
-              <input value="<?=$data['num']?>" required type="number" name="num" id="num" class="form-control" placeholder="" aria-describedby="num">
+              <label for="numero">Número</label>
+              <input value="<?= $data['numero'] ?>" required type="number" name="numero" id="numero" class="form-control" placeholder="" aria-describedby="numero">
             </div>
             <div class="form-group">
-              <label for="date">Date de approvisionnement </label>
-              <input value="<?=$data['date']?>" required type="date" name="date" id="date" class="form-control" placeholder="" aria-describedby="date">
+              <label for="fecha">Fecha de abastecimiento</label>
+              <input value="<?= $data['fecha'] ?>" required type="date" name="fecha" id="fecha" class="form-control" placeholder="" aria-describedby="fecha">
             </div>
             <div class="form-group">
-              <label for="four">Fournisseur</label>
-              <select name="four" id="four" class="form-control" placeholder="" aria-describedby="four">
-                <?php $qer=$bd->query("select * from fournisseurs");
+              <label for="proveedor">Proveedor</label>
+              <select name="proveedor" id="proveedor" class="form-control" placeholder="" aria-describedby="proveedor">
+                <?php $qer = $bd->query("select * from proveedores");
                       while($dt = $qer->fetch()):
                 ?>
-                <option <?=($data['four_id']==$dt['id'])?'selected':''?> value="<?= $dt['id']?>"><?= $dt['nomf']?></option>
-                <?php endwhile;?>
+                <option <?= ($data['proveedor_id'] == $dt['id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= $dt['nombre'] ?></option>
+                <?php endwhile; ?>
               </select>
             </div>
             <div class="form-group">
-              <button name="submit" class="btn btn-warning btn-block">Modifier</button>
+              <button name="submit" class="btn btn-warning btn-block">Modificar</button>
             </div>
           </form>
         </div>
       </div>
-
-
     </div>
 
-
-    <!-- Footer -->
-    <footer class="main">
-
-      &copy; 2022 <strong>SHOPUP</strong> Admin Theme by <a href="http://laborator.co" target="_blank">Laborator</a>
-
-    </footer>
+    
   </div>
-
-
-
 </div>
-
 
 <?php include '../include/footer.php'; ?>

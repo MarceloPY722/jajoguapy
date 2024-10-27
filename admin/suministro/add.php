@@ -1,16 +1,15 @@
 <?php include '../include/session.php'; ?>
 <?php include '../include/connexion.php'; ?>
 <?php
-$title = "add appros"; 
+$title = "add abastecimientos"; 
 if(isset($_POST['submit'])){
-$num = $_POST['num'];
-$date = $_POST['date'];
-$four = $_POST['four'];
-$req = $bd->prepare("insert into appros(num,date,four_id) values(?,?,?)");
-$req->execute([$num,$date,$four]);
-header('location: /Jajoguapy/admin/appros/index.php?msg=added');
+    $numero = $_POST['numero'];
+    $fecha = $_POST['fecha'];
+    $proveedor = $_POST['proveedor'];
+    $req = $bd->prepare("insert into abastecimientos(numero, fecha, proveedor_id) values(?,?,?)");
+    $req->execute([$numero, $fecha, $proveedor]);
+    header('location: /Jajoguapy/admin/suministro/index.php?msg=added');
 }
-
 ?>
 <?php include '../include/header.php'; ?>
 
@@ -27,7 +26,6 @@ header('location: /Jajoguapy/admin/appros/index.php?msg=added');
     <!-- End Menu -->
     <hr />
 
-
     <div class="row">
       <h3>Agregar Suministros</h3>
       <br />
@@ -35,45 +33,33 @@ header('location: /Jajoguapy/admin/appros/index.php?msg=added');
         <div class="card-body">
           <form method="post">
             <div class="form-group">
-              <label for="num">Num</label>
-              <input required type="number" name="num" id="num" class="form-control" placeholder="" aria-describedby="num">
+              <label for="numero">Número</label>
+              <input required type="number" name="numero" id="numero" class="form-control" placeholder="" aria-describedby="numero">
             </div>
             <div class="form-group">
-              <label for="date">Fecha del  </label>
-              <input required type="date" name="date" id="date" class="form-control" placeholder="" aria-describedby="date">
+              <label for="fecha">Fecha</label>
+              <input required type="date" name="fecha" id="fecha" class="form-control" placeholder="" aria-describedby="fecha">
             </div>
             <div class="form-group">
-              <label for="four">Fournisseur</label>
-              <select name="four" id="four" class="form-control" placeholder="" aria-describedby="four">
-                <?php $qer=$bd->query("select * from fournisseurs");
+              <label for="proveedor">Proveedor</label>
+              <select name="proveedor" id="proveedor" class="form-control" placeholder="" aria-describedby="proveedor">
+                <?php $qer = $bd->query("select * from proveedores");
                       while($dt = $qer->fetch()):
                 ?>
-                <option value="<?= $dt['id']?>"><?= $dt['nomf']?></option>
-                <?php endwhile;?>
+                <option value="<?= $dt['id'] ?>"><?= $dt['nombre'] ?></option>
+                <?php endwhile; ?>
               </select>
             </div>
             <div class="form-group">
-              <button name="submit" class="btn btn-primary btn-block">Ajouter</button>
+              <button name="submit" class="btn btn-primary btn-block">Agregar</button>
             </div>
           </form>
         </div>
       </div>
-
-
     </div>
 
-
-    <!-- Footer -->
-    <footer class="main">
-
-      &copy; 2022 <strong>SHOPUP</strong> Admin Theme by <a href="http://laborator.co" target="_blank">Laborator</a>
-
-    </footer>
+    
   </div>
-
-
-
 </div>
-
 
 <?php include '../include/footer.php'; ?>

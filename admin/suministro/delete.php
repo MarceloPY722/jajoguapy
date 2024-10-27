@@ -1,8 +1,8 @@
 <?php include '../include/session.php'; ?>
 <?php
-$title = "appros"; 
-$id= $_GET['id'];
+$title = "abastecimientos"; 
+$id = $_GET['id'];
 include '../include/connexion.php';
-$req = $bd->prepare('delete from appros where id=?');
+$req = $bd->prepare('delete from abastecimientos where id=?');
 $req->execute([$id]);
-header('location: /PFF/admin/appros/index.php?msg=deleted');
+header('location: /Jajoguapy/admin/suministro/index.php?msg=deleted');
