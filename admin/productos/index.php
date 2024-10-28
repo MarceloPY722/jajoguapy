@@ -4,16 +4,9 @@
 <?php $title = "productos"; ?>
 
 <div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
   <div class="main-content">
-
-    <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
     <hr />
 
     <div class="row">
@@ -33,7 +26,6 @@
           <span data-dismiss="alert" class="close">&times;</span>
         </div>
         <?php endif; ?>
-
       </div>
     </div>
     <div class="row">
@@ -51,18 +43,15 @@
           ]
         });
 
-        // Initalize Select Dropdown after DataTables is created
         $table3.closest('.dataTables_wrapper').find('select').select2({
           minimumResultsForSearch: -1
         });
 
-        // Setup - add a text input to each footer cell
         $('#table-3 tfoot th').each(function() {
           var title = $('#table-3 thead th').eq($(this).index()).text();
           $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
         });
 
-        // Apply the search
         table3.columns().every(function() {
           var that = this;
 
@@ -93,42 +82,39 @@
         </thead>
         <tbody>
           <?php
-					$req =  $bd->query("SELECT p.*, c.nombre FROM productos p, categorias c WHERE c.id = p.categoria_id");
-					while($data = $req->fetch()):
-				?>
+          $req = $bd->query("SELECT p.*, c.nombre AS categoria_nombre FROM productos p, categorias c WHERE c.id = p.categoria_id");
+          while($data = $req->fetch()):
+          ?>
           <tr class="gradeA">
             <td><?= $data['id'] ?></td>
-            <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt=""></td>
+            <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt="<?= $data['nombre'] ?>"></td>
             <td><?= $data['nombre'] ?></td>
             <td><?= $data['precio_compra'] ?></td>
             <td><?= $data['precio_venta'] ?></td>
             <td><?= $data['cantidad_stock'] ?></td>
-            <td><?= $data['nombre'] ?></td>
+            <td><?= $data['categoria_nombre'] ?></td>
             <td>
               <a href="/jajoguapy/admin/productos/update.php?id=<?= $data['id'] ?>"
                 class="btn btn-default btn-sm btn-icon icon-left">
                 <i class="entypo-pencil"></i>
                 Editar
               </a>
-              </td>
-              <td>
+            </td>
+            <td>
               <a href="/jajoguapy/admin/productos/delete.php?id=<?= $data['id'] ?>"
                 class="btn btn-danger btn-sm btn-icon icon-left">
                 <i class="entypo-cancel"></i>
                 Eliminar
               </a>
-              
-            
             </td>
           </tr>
           <?php
-					endwhile;
-				?>
+          endwhile;
+          ?>
         </tbody>
       </table>
     </div>
   </div>
-  
 </div>
 
 <?php include '../include/footer.php'; ?>

@@ -94,11 +94,11 @@
         </div>
     </section>
     
-    <section class="categories spad">
-        <div class="container">
+    <section class="categories spad" id="oferta">
+        <div class="container" >
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="categories__text">
+                    <div class="categories__text" >
                         <h2>Aprovecha <br /> <span>Esta Oferta por</span> <br /> Tiempo Limitado</h2>
                     </div>
                 </div>
@@ -145,26 +145,18 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="assets/logoW.png" alt=""></a>
+                        <a href="#"><img src="/jajoguapy/assets/logoW.png" alt="" class="footer-logo"></a>
+
                         </div>
                         <p>Tu Futuro Tecnologico en la palma de tu mano.</p>
                         <a href="#"><img src="img/payment.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Tienda</h6>
-                        <ul>
-                            <li><a href="#">Celulares</a></li>
-                            <li><a href="#">Ofertas</a></li>
-                            <li><a href="#">Accesorios</a></li>
-                            <li><a href="#">Descuentos</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Atención al C.</h6>
+                
+
+                <div class="col-lg-5 col-md-3 col-sm-6">
+                    <div class="footer__widget" id="contacto">
+                        <h6>Atención al Cliente</h6>
                         <ul>
                             <li><a href="#">Contactanos</a></li>
                             <li><a href="#">Metodos de Pagos</a></li>
@@ -173,7 +165,29 @@
                         </ul>
                     </div>
                 </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                <h6>Redes Sociales</h6> 
                 
+                <!--Falta Arreglar Detalles
+                Eliminar al Terminar-->
+                <div>
+                <h3 class="falta">Falta Terminar</h3>
+                <style>
+                    .falta{
+                        color: white;
+                    }
+                </style>
+                </div>
+                <!---->
+
+                
+               <a href="#"><i class="fa fa-facebook"></i></a>
+               <a href="#"><i class="fa fa-twitter"></i></a>
+               <a href="#"><i class="fa fa-pinterest"></i></a>
+               <a href="#"><i class="fa fa-instagram"></i></a>              
+        </div>
+</div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -189,9 +203,7 @@
                 </div>
             </div>
         </div>
-        
     </footer>
-    
     <style>
         .categories__hot__deal {
     position: relative;
@@ -236,6 +248,36 @@
     font-family: 'Times New Roman', Times, serif;
     font-size: 2rem;
 
+}
+
+
+.product__item__pic, .hero__items .set-bg, .categories__hot__deal img, .footer__logo img {
+    width: 100%;          
+    height: auto;          
+}
+
+.set-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero__items, .categories__hot__deal, .product__item__pic {
+    max-width: 100%;
+    background-size: cover;
+    background-position: center center;
+}
+
+.product__item__pic {
+    position: relative;
+    padding-top: 100%; 
+}
+
+@media (max-width: 992px) {
+    .product__item__pic, .hero__items, .categories__hot__deal img {
+        width: 100%;   
+        height: auto;  
+    }
 }
 
 

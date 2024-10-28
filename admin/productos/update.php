@@ -6,9 +6,10 @@ $id = $_GET['id'];
 $req = $bd->prepare('SELECT * FROM productos WHERE id=?');
 $req->execute([$id]);
 $data = $req->fetch();
-if(isset($_POST['sub'])){
+
+if (isset($_POST['sub'])) {
     $image = basename($_FILES['image']['name']);
-    $path = '../img/'.$image;
+    $path = '../img/' . $image;
     $file = $_FILES['image']['tmp_name'];
     move_uploaded_file($file, $path);
     $nombre = $_POST['nombre'];
@@ -29,11 +30,13 @@ if(isset($_POST['sub'])){
   <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
   <!-- End Sidebar -->
+  
   <div class="main-content">
 
     <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
     <!-- End Menu -->
+    
     <hr />
 
     <div class="row">
@@ -69,8 +72,9 @@ if(isset($_POST['sub'])){
             <div class="form-group">
               <label for="categoria">Categoria</label>
               <select name="categoria" id="categoria" class="form-control" placeholder="" aria-describedby="categoria">
-                <?php $qer = $bd->query("SELECT * FROM categorias");
-                      foreach($qer as $dt):
+                <?php 
+                $qer = $bd->query("SELECT * FROM categorias");
+                foreach ($qer as $dt): 
                 ?>
                 <option <?= ($data['categoria_id'] == $dt['id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= $dt['nombre'] ?></option>
                 <?php endforeach; ?>
@@ -82,7 +86,6 @@ if(isset($_POST['sub'])){
           </form>
         </div>
       </div>
-
     </div>
 
   </div>

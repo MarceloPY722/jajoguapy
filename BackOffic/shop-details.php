@@ -11,7 +11,7 @@ $cat = $data['categoria_id'];
 if(isset($_POST['sub'])){
   $Q = $_POST['qte'];
   if ($Q > $data['cantidad_stock']) {
-    echo "<script>alert('Este Producto no esta disponible por stock');</script>";
+    echo "<script>alert('Este Producto no está disponible por stock');</script>";
   } else {
     $qr = $bd->prepare("BEGIN;
                         INSERT INTO pedidos(fecha, usuario_id) VALUES(?, ?);
@@ -22,40 +22,37 @@ if(isset($_POST['sub'])){
   }
 }
 ?>
-    <!-- Shop Details Section Begin -->
-    <section class="shop-details">
-    
-        <div class="product__details__pic">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="product__details__breadcrumb">
-                            <a href="./index.php">Inicio</a>
-                            <span>Detalles del producto</span>
-                        </div>
+<!-- Shop Details Section Begin -->
+<section class="shop-details">
+    <div class="product__details__pic">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__details__breadcrumb">
+                        <a href="./index.php">Inicio</a>
+                        <span>Detalles del producto</span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-3">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-6 col-md-9">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="../admin/img/<?=$data['imagen']?>" alt="">
-                                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item"></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__pic__item">
+                                <img src="../admin/img/<?=$data['imagen']?>" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <form method="post">
+    </div>
+    <form method="post">
         <div class="product__details__content">
             <div class="container">
                 <div class="row d-flex justify-content-center">
@@ -70,10 +67,9 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?>
-                            </h3>
+                            <h3>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?></h3>
                             <div class="status">
-                            <?php if ($data['cantidad_stock'] > 0): ?>
+                                <?php if ($data['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
                                 <?php else: ?>
                                     <span class="stock-status out-of-stock">Agotado</span>
@@ -86,9 +82,9 @@ if(isset($_POST['sub'])){
                                     </div>
                                 </div>
                                 <?php if ($data['cantidad_stock'] > 0): ?>
-                                    <a href=""><button class="primary-btn" name="sub">Añadir al carrito</button></a>
+                                    <button class="primary-btn" name="sub">Añadir al carrito</button>
                                 <?php else: ?>
-                                    <a href=""><button class="primary-btn" name="sub" disabled>Añadir al carrito</button></a>
+                                    <button class="primary-btn" name="sub" disabled>Añadir al carrito</button>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -99,15 +95,14 @@ if(isset($_POST['sub'])){
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                    role="tab">Descripcion</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Descripción</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
                                         <p>
-                                        <?=$data['detalles']?>
+                                            <?= nl2br(htmlspecialchars($data['detalles'])) ?>
                                         </p>
                                     </div>
                                 </div>
@@ -117,31 +112,30 @@ if(isset($_POST['sub'])){
                 </div>
             </div>
         </div>
-        </form>
-        
-    </section>
-   
-    <section class="related spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="related-title">Producto relacionados</h3>
-                </div>
+    </form>
+</section>
+
+<section class="related spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="related-title">Productos relacionados</h3>
             </div>
-            <div class="row">
+        </div>
+        <div class="row">
             <?php
-					$qer =  $bd->prepare("SELECT * FROM productos WHERE categoria_id=? LIMIT 4");
-                    $qer->execute([$cat]);
-					while($data=$qer->fetch()):
-				?>
+            $qer = $bd->prepare("SELECT * FROM productos WHERE categoria_id=? LIMIT 4");
+            $qer->execute([$cat]);
+            while ($relatedData = $qer->fetch()):
+            ?>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="../admin/img/<?=$data['imagen']?>">
+                        <div class="product__item__pic set-bg" data-setbg="../admin/img/<?=$relatedData['imagen']?>">
                             <span class="label"></span>
                         </div>
                         <div class="product__item__text">
-                            <h6><?=$data['nombre']?></h6>
-                            <a href="shop-details.php?id=<?= $data['id']?>" class="add-cart">+ Añadir al Carrito</a>
+                            <h6><?=$relatedData['nombre']?></h6>
+                            <a href="shop-details.php?id=<?= $relatedData['id']?>" class="add-cart">+ Añadir al Carrito</a>
                             <div class="rating">
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
@@ -149,8 +143,8 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?>
-                                <?php if ($data['cantidad_stock'] > 0): ?>
+                            <h5>₲<?= number_format($relatedData['precio_venta'], 0, ',', '.') ?>
+                                <?php if ($relatedData['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
                                 <?php else: ?>
                                     <span class="stock-status out-of-stock">Agotado</span>
@@ -159,37 +153,40 @@ if(isset($_POST['sub'])){
                         </div>
                     </div>
                 </div>
-                <?php endwhile;?>
-            </div>
+            <?php endwhile; ?>
         </div>
-    </section>
-  
-    <footer class="footer">
+    </div>
+</section>
+
+<footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="/jajoguapy/assets/logoW.png" alt=""></a>
+                        <a href="#"><img src="/jajoguapy/assets/logoW.png" alt="" class="footer-logo"></a>
+
                         </div>
                         <p>Tu Futuro Tecnologico en la palma de tu mano.</p>
                         <a href="#"><img src="img/payment.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Tienda</h6>
-                        <ul>
-                            <li><a href="#">Celulares</a></li>
-                            <li><a href="#">Ofertas</a></li>
-                            <li><a href="#">Accesorios</a></li>
-                            <li><a href="#">Descuentos</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Atención al C.</h6>
+                <div class="footer__widget">
+                <h6>Tienda</h6>
+                <ul>
+                 <li><a href="tienda.php?categoria=1">Celulares</a></li>
+                 <li><a href="tienda.php?categoria=11">Smart TV</a></li>
+                 <li><a href="tienda.php?categoria=13">Notebooks</a></li>
+                 <li><a href="tienda.php?categoria=12">SmartWatch</a></li>
+                <li><a href="tienda.php?categoria=3">Media Player</a></li>
+                </ul>
+        </div>
+</div>
+
+                <div class="col-lg-5 col-md-3 col-sm-6">
+                    <div class="footer__widget" id="contacto">
+                        <h6>Atención al Cliente</h6>
                         <ul>
                             <li><a href="#">Contactanos</a></li>
                             <li><a href="#">Metodos de Pagos</a></li>
@@ -198,9 +195,6 @@ if(isset($_POST['sub'])){
                         </ul>
                     </div>
                 </div>
-                
-                
-
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -218,36 +212,36 @@ if(isset($_POST['sub'])){
         </div>
     </footer>
 
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
     </div>
-    <?php include './include/footer.php'?>
-    <style>
-        .status{
-           margin-right: 60px;
-           margin-bottom: 20px;
-        }
+</div>
+<?php include './include/footer.php'?>
+<style>
+    .status {
+        margin-right: 60px;
+        margin-bottom: 20px;
+    }
 
-        .stock-status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-left: 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
+    .stock-status {
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
 
-        .available {
-            background-color: green;
-            color: white;
-        }
+    .available {
+        background-color: green;
+        color: white;
+    }
 
-        .out-of-stock {
-            background-color: red;
-            color: white;
-        }
-    </style>
+    .out-of-stock {
+        background-color: red;
+        color: white;
+    }
+</style>

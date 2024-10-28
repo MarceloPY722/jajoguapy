@@ -29,7 +29,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="./index.php">Inicio</a></li>
-                            <li><a href="#">Oferta</a></li>
+                            <li><a href="#oferta">Oferta</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -37,3 +37,5 @@
             <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
     </header>
+
+    

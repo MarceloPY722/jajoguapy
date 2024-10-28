@@ -13,6 +13,7 @@ $categorias = $bd->query("SELECT c.id, c.nombre, COUNT(p.id) AS cantidad
 
 // Inicializar variables para el filtrado
 $categoria_id = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
 
 // Obtener el precio máximo y mínimo de los productos en la categoría seleccionada o en toda la DB si no se seleccionó ninguna
 if (!empty($categoria_id)) {
@@ -48,8 +49,19 @@ if (!empty($precio_max)) {
     $params[] = $precio_max;
 }
 
+// Agregar el filtro de búsqueda
+if (!empty($busqueda)) {
+    $where[] = "p.nombre LIKE ?";
+    $params[] = "%$busqueda%"; // Búsqueda de coincidencias parciales
+}
+
 if (!empty($where)) {
     $sql .= " WHERE " . implode(" AND ", $where);
+}
+
+// Si no se seleccionó una categoría, se limita la consulta a 20 productos
+if (empty($categoria_id)) {
+    $sql .= " LIMIT 20";
 }
 
 $stmt = $bd->prepare($sql);
@@ -57,10 +69,23 @@ $stmt->execute($params);
 $productos = $stmt;
 ?>
 
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 bg-light p-4">
-            <h3 class="text-center mb-4">Filtros</h3>
+            
+        <h3 style="text-align: right; font-size: 1.2rem;" class="mb-4">Buscador</h3>
+        <!-- Formulario de Búsqueda -->
+        <form method="get" action="tienda.php">
+                <div class="form-group mb-4">
+                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos" value="<?= isset($_GET['busqueda']) ? htmlspecialchars($_GET['busqueda']) : '' ?>">
+                </div>
+                <button type="submit" class="btn primary-btn w-100 mb-4">Buscar</button>
+            </form>
+
+        
+            <h3 style="text-align: right; font-size: 1.2rem;" class="mb-4">Filtros</h3>
             <form method="get" action="tienda.php">
                 <input type="hidden" name="categoria" value="<?= $categoria_id ?>">
                 <!-- Filtro de Categorías -->
@@ -72,7 +97,7 @@ $productos = $stmt;
                         $categorias->execute(); 
                         while($cat = $categorias->fetch()): 
                         ?>
-                            <a href="tienda.php?categoria=<?= $cat['id'] ?>" 
+                            <a href="tienda.php?categoria=<?= $cat['id'] ?>&busqueda=<?= isset($_GET['busqueda']) ? htmlspecialchars($_GET['busqueda']) : '' ?>" 
                                class="category-btn <?= ($categoria_id == $cat['id']) ? 'active' : '' ?>">
                                <?= $cat['nombre'] ?> (<?= $cat['cantidad'] ?>)
                             </a>
@@ -92,7 +117,7 @@ $productos = $stmt;
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button>
+                <button type="submit" class="btn primary-btn w-100">Aplicar Filtros</button>
             </form>
         </div>
 
@@ -121,7 +146,78 @@ $productos = $stmt;
         </div>
     </div>
 </div>
+
+
+<footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="/jajoguapy/assets/logoW.png" alt=""></a>
+                        </div>
+                        <p>Tu Futuro Tecnologico en la palma de tu mano.</p>
+                        <a href="#"><img src="img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                <h6>Tienda</h6>
+                <ul>
+                 <li><a href="tienda.php?categoria=1">Celulares</a></li>
+                 <li><a href="tienda.php?categoria=11">Smart TV</a></li>
+                 <li><a href="tienda.php?categoria=13">Notebooks</a></li>
+                 <li><a href="tienda.php?categoria=12">SmartWatch</a></li>
+                <li><a href="tienda.php?categoria=3">Media Player</a></li>
+                <li><a href="tienda.php?categoria=15">Juegos</a></li>
+                </ul>
+        </div>
+</div>
+
+                <div class="col-lg-5 col-md-3 col-sm-6">
+                    <div class="footer__widget" id="contacto">
+                        <h6>Atención al Cliente</h6>
+                        <ul>
+                            <li><a href="#">Contactanos</a></li>
+                            <li><a href="#">Metodos de Pagos</a></li>
+                            <li><a href="#">Delivery</a></li>
+                           
+                        </ul>
+                    </div>
+                </div>
+                
+               
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        
+                        <p>Todos los derechos reservado | JajoguaPy © 
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
 <style>
+.primary-btn {
+    background-color: black; /* Color de fondo del botón */
+    color: white; /* Color del texto por defecto */
+    transition: background-color 0.3s, color 0.3s; /* Transiciones suaves */
+}
+
+.primary-btn:hover {
+    background-color: black; /* Cambia el color de fondo al pasar el mouse */
+    color: white; /* Mantiene el color del texto blanco */
+}
+
 .product__item {
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -172,17 +268,6 @@ $productos = $stmt;
 
 .product__item:hover .product__item__text h6 {
     opacity: 0;  
-}
-
-.label {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #17a2b8;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
 }
 
 .add-cart {
@@ -252,5 +337,6 @@ $productos = $stmt;
     border-color: #007bff;
 }
 </style>
-<?php include './include/footer.php'; ?>
+
+<?php include './include/footer.php'?>
 <script src="./js/rangemax-min.js"></script>

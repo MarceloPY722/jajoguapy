@@ -9,9 +9,7 @@ $data = $req->fetch();
 $cat = $data['categoria_id'];
 
 ?>
-    <!-- Shop Details Section Begin -->
     <section class="shop-details">
-    
         <div class="product__details__pic">
             <div class="container">
                 <div class="row">
@@ -56,14 +54,14 @@ $cat = $data['categoria_id'];
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>₲<?=$data['precio_venta']?><span><?=$data['precio_venta'] + 450000?></span></h3>
+                            <h3>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h3>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
                                     <div class="pro-qty">
                                         <input name="qte" type="text" value="1">
                                     </div>
                                 </div>
-                                <a href="admin/login.php"  ><button class="primary-btn" name="sub">Añadir al carrito</button></a>
+                                <a href="admin/login.php"><button class="primary-btn" name="sub">Añadir al carrito</button></a>
                             </div>
                         </div>
                     </div>
@@ -73,16 +71,13 @@ $cat = $data['categoria_id'];
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                    role="tab">Descripcion</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Descripcion</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p>
-                                        <?=$data['detalles']?>
-                                        </p>
+                                        <p><?=$data['detalles']?></p>
                                     </div>
                                 </div>
                             </div>
@@ -91,11 +86,8 @@ $cat = $data['categoria_id'];
                 </div>
             </div>
         </div>
-        
     </section>
-    <!-- Shop Details Section End -->
 
-    <!-- Related Section Begin -->
     <section class="related spad">
         <div class="container">
             <div class="row">
@@ -103,12 +95,12 @@ $cat = $data['categoria_id'];
                     <h3 class="related-title">Productos relacionados</h3>
                 </div>
             </div>
-           <div class="row">
-            <?php
-					$qer =  $bd->prepare("SELECT * FROM productos WHERE categoria_id=? LIMIT 4");
+            <div class="row">
+                <?php
+                    $qer = $bd->prepare("SELECT * FROM productos WHERE categoria_id=? LIMIT 4");
                     $qer->execute([$cat]);
-					while($data=$qer->fetch()):
-				?>
+                    while($data=$qer->fetch()):
+                ?>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="admin/img/<?=$data['imagen']?>">
@@ -124,7 +116,7 @@ $cat = $data['categoria_id'];
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5><?=$data['precio_venta']?>₲</h5>
+                            <h5><?= number_format($data['precio_venta'], 0, ',', '.') ?>₲</h5>
                         </div>
                     </div>
                 </div>
@@ -132,9 +124,7 @@ $cat = $data['categoria_id'];
             </div>
         </div>
     </section>
-    <!-- Related Section End -->
-
-    <!-- Footer Section Begin -->
+    
     <footer class="footer">
         <div class="container">
             <div class="row">
@@ -165,7 +155,6 @@ $cat = $data['categoria_id'];
                             <li><a href="#">Contactanos</a></li>
                             <li><a href="#">Metodos de Pagos</a></li>
                             <li><a href="#">Delivery</a></li>
-                           
                         </ul>
                     </div>
                 </div>
@@ -186,9 +175,5 @@ $cat = $data['categoria_id'];
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search End -->
-
-    <!-- Js Plugins -->
+    
     <?php include './include/footer.php'?>
