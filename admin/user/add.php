@@ -11,7 +11,7 @@ if(isset($_POST['submit'])){
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $telefono = $_POST['telefono'];
-    $contraseña = md5($_POST['contrasena']);
+    $contrasena = md5($_POST['contrasena']);
     $correo = $_POST['correo'];
     $rol = $_POST['rol'];
     $ciudad = $_POST['ciudad'];
@@ -23,18 +23,10 @@ if(isset($_POST['submit'])){
 <?php include '../include/header.php'; ?>
 
 <div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
   <div class="main-content">
-
-    <!-- Start Menu -->
-    <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
-    <hr />
-
+  <?php include '../include/menu.php'; ?>
+  <hr />
 
     <div class="row">
       <h3>Agregar un usuario</h3>
@@ -51,7 +43,7 @@ if(isset($_POST['submit'])){
               <input type="text" name="usuario" id="usuario" class="form-control" placeholder="" aria-describedby="usuario">
             </div>
             <div class="form-group">
-              <label for="contraseña">Contraseña</label>
+              <label for="contrasena">Contraseña</label>
               <input type="password" name="contrasena" id="contrasena" class="form-control" placeholder="" aria-describedby="contrasena">
             </div>
             <div class="form-group">
@@ -98,7 +90,5 @@ if(isset($_POST['submit'])){
     </div>
 
 
-    <!-- Footer -->
-    
   </div>
 

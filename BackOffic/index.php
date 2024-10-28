@@ -2,9 +2,9 @@
 <?php include './include/cnx.php'?>
 <?php include './include/menu.php'?>
 
-    <section class="hero">
-    <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" data-setbg="/jajoguapy/assets/o.jpg">
+<section class="hero">
+        <div class="hero__slider owl-carousel">
+            <div class="hero__items set-bg" data-setbg="../assets/o.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
@@ -25,8 +25,28 @@
                     </div>
                 </div>
             </div>
+
+            <div class="hero__items set-bg" data-setbg="../assets/banner.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-7 col-md-8">
+                            <div class="hero__text">
+                                <h6>Ofertas</h6>
+                                <h2>Juegos Digitales</h2>
+                                <h3 style="color: yellow">Hasta el 40% De Descuento.</h3>
+                                <p></p>
+                                <a href="#" class="primary-btn">Comprar Ya!!</a>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section> 
+    </section>
+
+    
   
     <section id="product" class="product spad">
         <div class="container">
@@ -57,7 +77,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5><?=$data['precio_venta']?>₲</h5>
+                           <h5>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h5>
                         </div>
                     </div>
                     
@@ -71,7 +91,7 @@
         
     </section>
     
-    <section class="categories spad">
+    <section class="categories spad" id="oferta">
     <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -187,7 +207,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
+                    <div class="footer__widget" id="contacto">
                         <h6>Atención al C.</h6>
                         <ul>
                             <li><a href="#">Contactanos</a></li>

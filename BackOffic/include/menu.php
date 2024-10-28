@@ -43,9 +43,9 @@ $dt = $rq->fetch();
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="./index.php">Inicio</a></li>
-                            <li><a href="#product">Oferta</a></li>
+                            <li><a href="#oferta">Oferta</a></li>
                             <li><a href="#blogs">Blog</a></li>
-                            <li><a href="">Contactos</a></li>
+                            <li><a href="#contacto">Contactos</a></li>
                         </ul>
                     </nav>
                 </div>

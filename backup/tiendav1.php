@@ -1,3 +1,5 @@
+<!--Version sin el cambio de precios de categoria-->
+
 <?php include './include/head.php'?>
 <?php include './include/cnx.php'?>
 <?php include './include/menu.php'?>
@@ -11,23 +13,14 @@ $categorias = $bd->query("SELECT c.id, c.nombre, COUNT(p.id) AS cantidad
                          LEFT JOIN productos p ON c.id = p.categoria_id 
                          GROUP BY c.id, c.nombre");
 
-// Inicializar variables para el filtrado
-$categoria_id = isset($_GET['categoria']) ? $_GET['categoria'] : '';
-
-// Obtener el precio máximo y mínimo de los productos en la categoría seleccionada o en toda la DB si no se seleccionó ninguna
-if (!empty($categoria_id)) {
-    $precio_query = $bd->prepare("SELECT MAX(precio_venta) AS precio_max, MIN(precio_venta) AS precio_min 
-                                  FROM productos 
-                                  WHERE categoria_id = ?");
-    $precio_query->execute([$categoria_id]);
-} else {
-    $precio_query = $bd->query("SELECT MAX(precio_venta) AS precio_max, MIN(precio_venta) AS precio_min FROM productos");
-}
+// Obtener el precio máximo y mínimo de los productos
+$precio_query = $bd->query("SELECT MAX(precio_venta) AS precio_max, MIN(precio_venta) AS precio_min FROM productos");
 $precio_data = $precio_query->fetch();
 $precio_max_default = $precio_data['precio_max'];
 $precio_min_default = $precio_data['precio_min'];
 
-// Obtener el valor de filtro de precio máximo
+// Inicializar variables para el filtrado
+$categoria_id = isset($_GET['categoria']) ? $_GET['categoria'] : '';
 $precio_max = isset($_GET['precio_max']) ? $_GET['precio_max'] : $precio_max_default;
 
 // Construir la consulta SQL basada en los filtros
@@ -59,6 +52,7 @@ $productos = $stmt;
 
 <div class="container-fluid">
     <div class="row">
+      
         <div class="col-md-3 bg-light p-4">
             <h3 class="text-center mb-4">Filtros</h3>
             <form method="get" action="tienda.php">
@@ -80,7 +74,7 @@ $productos = $stmt;
                     </div>
                 </div>
                 
-                <!-- Filtro de Precio Máximo -->
+                
                 <div class="form-group mb-4">
                     <label for="precio_max_range" class="mb-2">Precio Máximo</label>
                     <div class="range-container">
@@ -96,12 +90,14 @@ $productos = $stmt;
             </form>
         </div>
 
+      
         <div class="col-md-9">
             <div class="product-grid">
                 <?php while($producto = $productos->fetch()): ?>
                 <div class="product__item">
                     <div class="product__item__pic">
                         <img src="../admin/img/<?=$producto['imagen']?>" alt="<?=$producto['nombre']?>">
+                       
                     </div>
                     <div class="product__item__text">
                         <h6><?=$producto['nombre']?></h6>
@@ -121,136 +117,3 @@ $productos = $stmt;
         </div>
     </div>
 </div>
-<style>
-.product__item {
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-.product__item:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-3px);
-}
-
-.product__item__pic {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.product__item__pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.product__item__text {
-    text-align: center;
-    padding: 10px 0;
-    position: relative;  
-}
-
-.product__item__text h6 {
-    font-size: 14px;
-    margin-bottom: 10px;
-    transition: opacity 0.3s ease; 
-}
-
-.product__item__text h5 {
-    color: #000;  
-    font-weight: normal;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.product__item:hover .product__item__text h6 {
-    opacity: 0;  
-}
-
-.label {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #17a2b8;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.add-cart {
-    position: absolute;  
-    left: 0;
-    right: 0;
-    top: 0;  
-    color: #ff0000;
-    text-decoration: none;
-    font-size: 14px;
-    background: transparent;
-    border: none;
-    padding: 5px 0;
-    opacity: 0; 
-    transition: opacity 0.3s ease;  
-    pointer-events: none; 
-}
-
-.add-cart:before {
-    content: "+ ";  
-    color: #ff0000;
-}
-
-.add-cart:hover {
-    color: #ff0000; 
-    text-decoration: none;
-}
-
-.product__item:hover .add-cart {
-    opacity: 1; 
-    pointer-events: auto;  
-}
-
-.rating {
-    margin: 10px 0;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.category-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.category-btn {
-    padding: 8px 15px;
-    font-size: 14px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-.category-btn:hover,
-.category-btn.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-</style>
-<?php include './include/footer.php'; ?>
-<script src="./js/rangemax-min.js"></script>
