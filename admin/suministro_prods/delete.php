@@ -5,4 +5,4 @@ $id = $_GET['id'];
 include '../include/connexion.php';
 $req = $bd->prepare('delete from abastecimientos_productos where id=?');
 $req->execute([$id]);
-header('location: /Jajoguapyv2/admin/suministro_prods/index.php?msg=deleted');
+header('location: /Jajoguapy/admin/suministro_prods/index.php?msg=deleted');

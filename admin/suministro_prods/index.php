@@ -106,14 +106,14 @@
             <td><?= $data['categoria_nombre'] ?></td>
             <td><?= $data['proveedor_nombre'] ?></td>
             <td>
-              <a href="/Jajoguapyv2/admin/abastecimientos_productos/update.php?id=<?= $data['id'] ?>"
+              <a href="/Jajoguapy/admin/suministro_prods/update.php?id=<?= $data['id'] ?>"
                 class="btn btn-default btn-sm btn-icon icon-left">
                 <i class="entypo-pencil"></i>
                 Editar
               </a>
             </td>
             <td>
-              <a href="/Jajoguapyv2/admin/abastecimientos_productos/delete.php?id=<?= $data['id'] ?>"
+              <a href="/Jajoguapy/admin/suministro_prods/delete.php?id=<?= $data['id'] ?>"
                 class="btn btn-danger btn-sm btn-icon icon-left">
                 <i class="entypo-cancel"></i>
                 Eliminar

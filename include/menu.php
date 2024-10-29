@@ -22,7 +22,7 @@
                 <div class="col-lg-3 col-md-3"style="height: 100px;">
                     <div class="header__logo">
                         <a href="./index.php">
-                            <img src="/jajoguapyv2/assets/logo10.png" alt=""></a>
+                            <img src="/jajoguapy/assets/logo10.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9">

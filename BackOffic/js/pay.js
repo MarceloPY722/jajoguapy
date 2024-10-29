@@ -34,9 +34,5 @@
             return;
         }
 
-        // Si todas las validaciones pasan, puedes procesar el pago o redirigir
-        // Aquí iría la lógica para procesar el pago
-       
-        // Redirigir a la página de confirmación o procesar el pedido
-        window.location.href = '/jajoguapyv2/BackOffic/transaccion.php';
+        window.location.href = '/jajoguapy/BackOffic/transaccion.php';
     });

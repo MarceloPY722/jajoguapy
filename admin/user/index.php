@@ -7,7 +7,7 @@
   <?php include '../include/sidebar.php'; ?>
   <div class="main-content">
     <?php include '../include/menu.php'; ?>
-   
+
     <hr />
 
     <div class="row">
@@ -27,47 +27,23 @@
           <span data-dismiss="alert" class="close">&times;</span>
         </div>
         <?php endif; ?>
-
       </div>
     </div>
+
     <div class="row">
-      <h3>Lista de Usuarios</h3>
+      <h3 style="display: inline;">Lista de Usuarios</h3>
+
+      <li class="has-sub" style="list-style-type: none; display: inline; float: right; margin-top: -10px;">
+  <a href="/jajoguapy/admin/print/user_print.php" target="_blank" style="color:#fff; background-color: #007bff; padding: 10px 15px; border-radius: 5px;">
+    <i class="entypo-print"></i>
+    <span class="title">Imprimir</span>
+  </a>
+</li>
+
+
       <br />
 
-      <script type="text/javascript">
-      jQuery(document).ready(function($) {
-        var $table3 = jQuery("#table-3");
-
-        var table3 = $table3.DataTable({
-          "aLengthMenu": [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"]
-          ]
-        });
-
-        $table3.closest('.dataTables_wrapper').find('select').select2({
-          minimumResultsForSearch: -1
-        });
-
-        $('#table-3 tfoot th').each(function() {
-          var title = $('#table-3 thead th').eq($(this).index()).text();
-          $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
-        });
-
-        table3.columns().every(function() {
-          var that = this;
-
-          $('input', this.footer()).on('keyup change', function() {
-            if (that.search() !== this.value) {
-              that
-                .search(this.value)
-                .draw();
-            }
-          });
-        });
-      });
-      </script>
-
+      
       <table class="table table-bordered datatable" id="table-3">
         <thead>
           <tr class="replace-inputs">
@@ -80,9 +56,9 @@
         </thead>
         <tbody>
           <?php
-					$req =  $bd->query("SELECT * FROM usuarios");
-					while($data = $req->fetch()):
-				?>
+            $req =  $bd->query("SELECT * FROM usuarios");
+            while($data = $req->fetch()):
+          ?>
           <tr class="gradeA">
             <td><?= $data['id'] ?></td>
             <td><?= $data['usuario'] ?></td>
@@ -109,8 +85,8 @@
             </td>
           </tr>
           <?php
-					endwhile;
-				?>
+            endwhile;
+          ?>
         </tbody>
         <tfoot>
           <tr>

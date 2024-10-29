@@ -52,6 +52,13 @@
         </a>
       </li>
       
+      <li class="has-sub">
+        <a href="" style="color:#fff">
+          <i class="entypo-book"></i>
+          <span class="title">Ver Informes</span>
+        </a>
+      </li>
+
       <!-- Start item menu -->
       <li class="has-sub <?= ($title=="category" || $title=="add category")?'active':'' ?>">
         <a href="/jajoguapy/admin/categoria/index.php" style="color:#fff">
@@ -95,7 +102,7 @@
           </li>
         </ul>
       </li>
-      <!-- End item menu -->
+      
       <li class="has-sub <?= ($title=="produit" || $title=="add produit")?'active':''?>">
         <a href="/jajoguapy/admin/productos/" style="color:#fff">
           <i class="entypo-bag"></i>
@@ -161,7 +168,7 @@
       <li class="has-sub <?= ($title=="pedidos_prods" || $title=="add pedidos_prods")?'active':''?>">
         <a href="/jajoguapy/admin/pedidos_prods/" style="color:#fff">
           <i class="entypo-publish"></i>
-          <span class="title">Pedidos de productos</span>
+          <span class="title">Pedidos en Proceso</span>
         </a>
         <ul>
           <li class="<?= ($title=="pedidos_prods")?'active':'' ?>">

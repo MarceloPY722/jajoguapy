@@ -17,9 +17,7 @@
             </div>
         </div>
     </section>
-    <!-- Breadcrumb Section End -->
-
-    <!-- Shopping Cart Section Begin -->
+    
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">

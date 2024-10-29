@@ -34,6 +34,7 @@
     </div>
     <div class="row">
       <h3>Lista de Categorias</h3>
+
       <br />
 
       <script type="text/javascript">
@@ -47,18 +48,15 @@
           ]
         });
 
-        // Initalize Select Dropdown after DataTables is created
         $table3.closest('.dataTables_wrapper').find('select').select2({
           minimumResultsForSearch: -1
         });
 
-        // Setup - add a text input to each footer cell
         $('#table-3 tfoot th').each(function() {
           var title = $('#table-3 thead th').eq($(this).index()).text();
           $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
         });
 
-        // Apply the search
         table3.columns().every(function() {
           var that = this;
 

@@ -30,6 +30,12 @@
     </div>
     <div class="row">
       <h3>Lista de Productos</h3>
+      <li class="has-sub" style="list-style-type: none; display: inline; float: right; margin-top: -10px;">
+  <a href="/jajoguapy/admin/print/prod_print.php" target="_blank" style="color:#fff; background-color: #007bff; padding: 10px 15px; border-radius: 5px;">
+    <i class="entypo-print"></i>
+    <span class="title">Imprimir</span>
+  </a>
+</li>
       <br />
 
       <script type="text/javascript">
@@ -81,37 +87,38 @@
           </tr>
         </thead>
         <tbody>
-          <?php
-          $req = $bd->query("SELECT p.*, c.nombre AS categoria_nombre FROM productos p, categorias c WHERE c.id = p.categoria_id");
-          while($data = $req->fetch()):
-          ?>
-          <tr class="gradeA">
-            <td><?= $data['id'] ?></td>
-            <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt="<?= $data['nombre'] ?>"></td>
-            <td><?= $data['nombre'] ?></td>
-            <td><?= $data['precio_compra'] ?></td>
-            <td><?= $data['precio_venta'] ?></td>
-            <td><?= $data['cantidad_stock'] ?></td>
-            <td><?= $data['categoria_nombre'] ?></td>
-            <td>
-              <a href="/jajoguapy/admin/productos/update.php?id=<?= $data['id'] ?>"
-                class="btn btn-default btn-sm btn-icon icon-left">
-                <i class="entypo-pencil"></i>
-                Editar
-              </a>
-            </td>
-            <td>
-              <a href="/jajoguapy/admin/productos/delete.php?id=<?= $data['id'] ?>"
-                class="btn btn-danger btn-sm btn-icon icon-left">
-                <i class="entypo-cancel"></i>
-                Eliminar
-              </a>
-            </td>
-          </tr>
-          <?php
-          endwhile;
-          ?>
-        </tbody>
+  <?php
+  $req = $bd->query("SELECT p.*, c.nombre AS categoria_nombre FROM productos p, categorias c WHERE c.id = p.categoria_id");
+  while($data = $req->fetch()):
+  ?>
+  <tr class="gradeA">
+    <td><?= $data['id'] ?></td>
+    <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt="<?= $data['nombre'] ?>"></td>
+    <td><?= $data['nombre'] ?></td>
+    <td>₲ <?= number_format($data['precio_compra'], 0, ',', '.') ?></td> <!-- Formateo aquí -->
+    <td>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></td>  <!-- Formateo aquí -->
+    <td><?= $data['cantidad_stock'] ?></td>
+    <td><?= $data['categoria_nombre'] ?></td>
+    <td>
+      <a href="/jajoguapy/admin/productos/update.php?id=<?= $data['id'] ?>"
+        class="btn btn-default btn-sm btn-icon icon-left">
+        <i class="entypo-pencil"></i>
+        Editar
+      </a>
+    </td>
+    <td>
+      <a href="/jajoguapy/admin/productos/delete.php?id=<?= $data['id'] ?>"
+        class="btn btn-danger btn-sm btn-icon icon-left">
+        <i class="entypo-cancel"></i>
+        Eliminar
+      </a>
+    </td>
+  </tr>
+  <?php
+  endwhile;
+  ?>
+</tbody>
+
       </table>
     </div>
   </div>

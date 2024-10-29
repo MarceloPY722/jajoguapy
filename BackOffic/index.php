@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="hero__items set-bg" data-setbg="../assets/banner.jpg">
+            <div class="hero__items set-bg" data-setbg="../assets/banner2.png">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
@@ -128,7 +128,7 @@
                                 <p>Seconds</p>
                             </div>
                         </div>
-                        <a href="/jajoguapy/BackOffic/shop-details.php?id=19" class="primary-btn">Compra Ya!</a>
+                        <a href="/jajoguapy/BackOffic/shop-details.php?id=57" class="primary-btn">Compra Ya!</a>
                     </div>
                 </div>
             </div>

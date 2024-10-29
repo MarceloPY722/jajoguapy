@@ -6,11 +6,19 @@ if(isset($_POST['submit'])){
     $prod = $_POST['prod'];
     $abastecimiento = $_POST['abastecimiento'];
     $cantidad = $_POST['cantidad'];
-    $req = $bd->prepare("insert into abastecimientos_productos(producto_id, abastecimiento_id, cantidad) values(?,?,?)");
+
+    // Insertar el registro en la tabla abastecimientos_productos
+    $req = $bd->prepare("INSERT INTO abastecimientos_productos (producto_id, abastecimiento_id, cantidad) VALUES (?, ?, ?)");
     $req->execute([$prod, $abastecimiento, $cantidad]);
-    header('location: /Jajoguapyv2/admin/suministro_prods/index.php?msg=added');
+
+    // Actualizar el stock del producto
+    $updateStock = $bd->prepare("UPDATE productos SET cantidad_stock = cantidad_stock + ? WHERE id = ?");
+    $updateStock->execute([$cantidad, $prod]);
+
+    header('location: /Jajoguapy/admin/suministro_prods/index.php?msg=added');
 }
 ?>
+
 <?php include '../include/header.php'; ?>
 
 <div class="page-container">
@@ -35,7 +43,7 @@ if(isset($_POST['submit'])){
             <div class="form-group">
               <label for="prod">Producto</label>
               <select name="prod" id="prod" class="form-control" placeholder="" aria-describedby="prod">
-                <?php $qer = $bd->query("select * from productos");
+                <?php $qer = $bd->query("SELECT * FROM productos");
                       while($dt = $qer->fetch()):
                 ?>
                 <option value="<?= $dt['id'] ?>"><?= $dt['nombre'] ?></option>
@@ -45,7 +53,7 @@ if(isset($_POST['submit'])){
             <div class="form-group">
               <label for="abastecimiento">Suministrar</label>
               <select name="abastecimiento" id="abastecimiento" class="form-control" placeholder="" aria-describedby="abastecimiento">
-                <?php $qer = $bd->query("select * from abastecimientos");
+                <?php $qer = $bd->query("SELECT * FROM abastecimientos");
                       while($dt = $qer->fetch()):
                 ?>
                 <option value="<?= $dt['id'] ?>"><?= $dt['numero'] ?></option>

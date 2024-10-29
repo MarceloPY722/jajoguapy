@@ -11,7 +11,7 @@ $date = $_POST['date'];
 $user = $_POST['user'];
 $req = $bd->prepare("update commandes set date=?,iduser=? where id=?");
 $req->execute([$date,$user,$id]);
-header('location: /Jajoguapyv2/admin/commande/index.php?msg=updated');
+header('location: /Jajoguapy/admin/commande/index.php?msg=updated');
 }
 
 ?>

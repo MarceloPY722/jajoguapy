@@ -1,5 +1,6 @@
 <?php include '../include/session.php'; ?>
 <?php include '../include/connexion.php'; ?>
+
 <?php
 $title = "produit"; 
 $id = $_GET['id'];
@@ -8,35 +9,33 @@ $req->execute([$id]);
 $data = $req->fetch();
 
 if (isset($_POST['sub'])) {
-    $image = basename($_FILES['image']['name']);
+    $image = $_FILES['image']['name'] ? basename($_FILES['image']['name']) : $data['imagen'];
     $path = '../img/' . $image;
-    $file = $_FILES['image']['tmp_name'];
-    move_uploaded_file($file, $path);
+    if ($_FILES['image']['name']) { // Solo mover el archivo si se ha subido una nueva imagen
+        move_uploaded_file($_FILES['image']['tmp_name'], $path);
+    }
     $nombre = $_POST['nombre'];
     $detalles = $_POST['detalles'];
     $precio_compra = $_POST['precio_compra'];
     $precio_venta = $_POST['precio_venta'];
     $cantidad_stock = $_POST['cantidad_stock'];
     $categoria = $_POST['categoria'];
-    $rq = $bd->prepare("UPDATE productos SET nombre=?, precio_compra=?, precio_venta=?, cantidad_stock=?, categoria_id=?, detalles=? WHERE id=?");
-    $rq->execute([$nombre, $precio_compra, $precio_venta, $cantidad_stock, $categoria, $detalles, $id]);
+
+    $rq = $bd->prepare("UPDATE productos SET nombre=?, precio_compra=?, precio_venta=?, cantidad_stock=?, categoria_id=?, detalles=?, imagen=? WHERE id=?");
+    $rq->execute([$nombre, $precio_compra, $precio_venta, $cantidad_stock, $categoria, $detalles, $image, $id]);
+    
     header('location: /jajoguapy/admin/productos/index.php?msg=updated');
+    exit; // Asegúrate de hacer un exit después de redirigir
 }
 ?>
+
 <?php include '../include/header.php'; ?>
 
 <div class="page-container">
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
   
   <div class="main-content">
-
-    <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
-    
     <hr />
 
     <div class="row">
@@ -47,36 +46,39 @@ if (isset($_POST['sub'])) {
           <form method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label for="image">Imagen</label>
-              <input value="c:/<?= $data['imagen'] ?>" type="file" name="image" id="image" class="form-control" placeholder="" aria-describedby="image">
+              <input type="file" name="image" id="image" class="form-control" aria-describedby="image">
+              <?php if ($data['imagen']): ?>
+                <img src="../img/<?= $data['imagen'] ?>" alt="Imagen del producto" style="max-width: 150px; display: block; margin-top: 10px;">
+              <?php endif; ?>
             </div>
             <div class="form-group">
               <label for="nombre">Producto</label>
-              <input value="<?= $data['nombre'] ?>" type="text" name="nombre" id="nombre" class="form-control" placeholder="" aria-describedby="nombre">
+              <input value="<?= htmlspecialchars($data['nombre']) ?>" type="text" name="nombre" id="nombre" class="form-control" required>
             </div>
             <div class="form-group">
               <label for="detalles">Detalles</label>
-              <textarea class="form-control" name="detalles" id="detalles" cols="30" rows="5"><?= $data['detalles'] ?></textarea>
+              <textarea class="form-control" name="detalles" id="detalles" cols="30" rows="5" required><?= htmlspecialchars($data['detalles']) ?></textarea>
             </div>
             <div class="form-group">
               <label for="precio_compra">Precio de Compra</label>
-              <input value="<?= $data['precio_compra'] ?>" type="number" name="precio_compra" id="precio_compra" class="form-control" placeholder="" aria-describedby="precio_compra">
+              <input value="<?= htmlspecialchars($data['precio_compra']) ?>" type="number" name="precio_compra" id="precio_compra" class="form-control" required>
             </div>
             <div class="form-group">
               <label for="precio_venta">Precio de Venta</label>
-              <input value="<?= $data['precio_venta'] ?>" type="number" name="precio_venta" id="precio_venta" class="form-control" placeholder="" aria-describedby="precio_venta">
+              <input value="<?= htmlspecialchars($data['precio_venta']) ?>" type="number" name="precio_venta" id="precio_venta" class="form-control" required>
             </div>
             <div class="form-group">
               <label for="cantidad_stock">Cantidad</label>
-              <input value="<?= $data['cantidad_stock'] ?>" type="number" name="cantidad_stock" id="cantidad_stock" class="form-control" placeholder="" aria-describedby="cantidad_stock">
+              <input value="<?= htmlspecialchars($data['cantidad_stock']) ?>" type="number" name="cantidad_stock" id="cantidad_stock" class="form-control" required>
             </div>
             <div class="form-group">
               <label for="categoria">Categoria</label>
-              <select name="categoria" id="categoria" class="form-control" placeholder="" aria-describedby="categoria">
+              <select name="categoria" id="categoria" class="form-control" required>
                 <?php 
                 $qer = $bd->query("SELECT * FROM categorias");
                 foreach ($qer as $dt): 
                 ?>
-                <option <?= ($data['categoria_id'] == $dt['id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= $dt['nombre'] ?></option>
+                <option <?= ($data['categoria_id'] == $dt['id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= htmlspecialchars($dt['nombre']) ?></option>
                 <?php endforeach; ?>
               </select>
             </div>

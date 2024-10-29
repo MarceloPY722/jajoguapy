@@ -22,7 +22,6 @@ if(isset($_POST['sub'])){
   }
 }
 ?>
-<!-- Shop Details Section Begin -->
 <section class="shop-details">
     <div class="product__details__pic">
         <div class="container">
@@ -67,7 +66,7 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>₲<?= number_format($data['precio_venta'], 0, ',', '.') ?></h3>
+                            <h3>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h3>
                             <div class="status">
                                 <?php if ($data['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
@@ -124,8 +123,9 @@ if(isset($_POST['sub'])){
         </div>
         <div class="row">
             <?php
-            $qer = $bd->prepare("SELECT * FROM productos WHERE categoria_id=? LIMIT 4");
-            $qer->execute([$cat]);
+            $qer = $bd->prepare("SELECT * FROM productos WHERE categoria_id = ? AND id != ? LIMIT 4");
+            $qer->execute([$cat, $id]);
+
             while ($relatedData = $qer->fetch()):
             ?>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
@@ -143,7 +143,7 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5>₲<?= number_format($relatedData['precio_venta'], 0, ',', '.') ?>
+                            <h5>₲ <?= number_format($relatedData['precio_venta'], 0, ',', '.') ?>
                                 <?php if ($relatedData['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
                                 <?php else: ?>

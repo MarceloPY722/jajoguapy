@@ -1,4 +1,4 @@
-<?php include './include/cnx.php'; $compraExitosa = true;  $numeroOrden = 'ORD-' . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT); ?>
+<?php include '.../include/cnx.php'; $compraExitosa = true;  $numeroOrden = 'ORD-' . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

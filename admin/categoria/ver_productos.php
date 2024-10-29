@@ -24,6 +24,7 @@ $productos = $req->fetchAll();
 
     <div class="row">
       <h3><?= $categoria['nombre'] ?></h3>
+      
       <br />
 
       <table class="table table-bordered datatable" id="table-3">

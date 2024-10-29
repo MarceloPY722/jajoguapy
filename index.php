@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="hero__items set-bg" data-setbg="assets/banner.jpg">
+            <div class="hero__items set-bg" data-setbg="assets/banner2.png">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
@@ -168,24 +168,10 @@
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
                 <div class="footer__widget">
                 <h6>Redes Sociales</h6> 
-                
-                <!--Falta Arreglar Detalles
-                Eliminar al Terminar-->
-                <div>
-                <h3 class="falta">Falta Terminar</h3>
-                <style>
-                    .falta{
-                        color: white;
-                    }
-                </style>
-                </div>
-                <!---->
-
-                
-               <a href="#"><i class="fa fa-facebook"></i></a>
-               <a href="#"><i class="fa fa-twitter"></i></a>
-               <a href="#"><i class="fa fa-pinterest"></i></a>
-               <a href="#"><i class="fa fa-instagram"></i></a>              
+               <a href="#"><i class="fa fa-facebook"> Facebook</i></a><br>
+               <a href="#"><i class="fa fa-twitter"> Twitter</i></a><br>
+               <a href="#"><i class="fa fa-whatsapp"> WhatsApp</i></a><br>
+               <a href="#"><i class="fa fa-instagram"></i> Instagram</a><br>              
         </div>
 </div>
             </div>

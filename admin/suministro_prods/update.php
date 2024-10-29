@@ -12,7 +12,7 @@ if(isset($_POST['submit'])){
     $cantidad = $_POST['cantidad'];
     $req = $bd->prepare("update abastecimientos_productos set producto_id=?, abastecimiento_id=?, cantidad=? where id=?");
     $req->execute([$prod, $abastecimiento, $cantidad, $id]);
-    header('location: /Jajoguapyv2/admin/abastecimientos_productos/index.php?msg=updated');
+    header('location: /Jajoguapy/admin/suministro_prods/index.php?msg=updated');
 }
 ?>
 <?php include '../include/header.php'; ?>
