@@ -40,36 +40,35 @@
 
       <script type="text/javascript">
       jQuery(document).ready(function($) {
-          var $table3 = jQuery("#table-3");
+        var $table3 = jQuery("#table-3");
 
-          var table3 = $table3.DataTable({
-              "aLengthMenu": [
-                  [10, 25, 50, -1],
-                  [10, 25, 50, "All"]
-              ],
-              initComplete: function () {
-                  // Agrega el input de búsqueda en cada columna del pie de tabla
-                  this.api().columns().every(function() {
-                      var column = this;
-                      $('input', column.footer()).on('keyup change clear', function() {
-                          if (column.search() !== this.value) {
-                              column.search(this.value).draw();
-                          }
-                      });
-                  });
-              }
-          });
+        var table3 = $table3.DataTable({
+          "aLengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ]
+        });
 
-          // Aplica select2 para el menú de longitud de página
-          $table3.closest('.dataTables_wrapper').find('select').select2({
-              minimumResultsForSearch: -1
-          });
+        $table3.closest('.dataTables_wrapper').find('select').select2({
+          minimumResultsForSearch: -1
+        });
 
-          // Coloca un input en cada columna de la fila del pie de tabla
-          $('#table-3 tfoot th').each(function() {
-              var title = $('#table-3 thead th').eq($(this).index()).text();
-              $(this).html('<input type="text" class="form-control" placeholder="Buscar ' + title + '" />');
+        $('#table-3 tfoot th').each(function() {
+          var title = $('#table-3 thead th').eq($(this).index()).text();
+          $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+        });
+
+        table3.columns().every(function() {
+          var that = this;
+
+          $('input', this.footer()).on('keyup change', function() {
+            if (that.search() !== this.value) {
+              that
+                .search(this.value)
+                .draw();
+            }
           });
+        });
       });
       </script>
 
@@ -82,48 +81,38 @@
             <th>Precio de Compra</th>
             <th>Precio de Venta</th>
             <th>Descuento</th>
-            <th>Precio con Descuento</th>
             <th>Cantidad</th>
             <th>Categoria</th>
-            <th>Acción</th>
+            <th>Accion</th>
+            <th>Accion</th>
           </tr>
         </thead>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </tfoot>
         <tbody>
           <?php
           $req = $bd->query("SELECT p.*, c.nombre AS categoria_nombre, c.descuentos FROM productos p, categorias c WHERE c.id = p.categoria_id");
           while($data = $req->fetch()):
-            $precio_con_descuento = $data['precio_venta'] * (1 - $data['descuentos']);
           ?>
           <tr class="gradeA">
             <td><?= $data['id'] ?></td>
             <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt="<?= $data['nombre'] ?>"></td>
             <td><?= $data['nombre'] ?></td>
-            <td>₲ <?= number_format($data['precio_compra'], 0, ',', '.') ?></td>
-            <td>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></td>
+            <td>₲ <?= number_format($data['precio_compra'], 0, ',', '.') ?></td> <!-- Formateo aquí -->
+            <td>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></td>  <!-- Formateo aquí -->
             <td><?= $data['descuentos'] * 100 ?>%</td>
-            <td>₲ <?= number_format($precio_con_descuento, 0, ',', '.') ?></td>
             <td><?= $data['cantidad_stock'] ?></td>
             <td><?= $data['categoria_nombre'] ?></td>
             <td>
-              <a href="/jajoguapy/admin/productos/update.php?id=<?= $data['id'] ?>" class="btn btn-default btn-sm btn-icon icon-left">
-                <i class="entypo-pencil"></i> Editar
+              <a href="/jajoguapy/admin/productos/update.php?id=<?= $data['id'] ?>"
+                class="btn btn-default btn-sm btn-icon icon-left">
+                <i class="entypo-pencil"></i>
+                Editar
               </a>
-              <a href="/jajoguapy/admin/productos/delete.php?id=<?= $data['id'] ?>" class="btn btn-danger btn-sm btn-icon icon-left">
-                <i class="entypo-cancel"></i> Eliminar
+            </td>
+            <td>
+              <a href="/jajoguapy/admin/productos/delete.php?id=<?= $data['id'] ?>"
+                class="btn btn-danger btn-sm btn-icon icon-left">
+                <i class="entypo-cancel"></i>
+                Eliminar
               </a>
             </td>
           </tr>

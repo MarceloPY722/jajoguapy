@@ -8,10 +8,17 @@ $req = $bd->prepare('SELECT * FROM productos WHERE id=?');
 $req->execute([$id]);
 $data = $req->fetch();
 
+
+$categoria_id = $data['categoria_id'];
+$req_categoria = $bd->prepare('SELECT descuentos FROM categorias WHERE id=?');
+$req_categoria->execute([$categoria_id]);
+$categoria_data = $req_categoria->fetch();
+$descuento_categoria = $categoria_data['descuentos'];
+
 if (isset($_POST['sub'])) {
     $image = $_FILES['image']['name'] ? basename($_FILES['image']['name']) : $data['imagen'];
     $path = '../img/' . $image;
-    if ($_FILES['image']['name']) { // Solo mover el archivo si se ha subido una nueva imagen
+    if ($_FILES['image']['name']) { 
         move_uploaded_file($_FILES['image']['tmp_name'], $path);
     }
     $nombre = $_POST['nombre'];
@@ -21,11 +28,14 @@ if (isset($_POST['sub'])) {
     $cantidad_stock = $_POST['cantidad_stock'];
     $categoria = $_POST['categoria'];
 
+
+    $precio_venta_con_descuento = $precio_venta * (1 - $descuento_categoria);
+
     $rq = $bd->prepare("UPDATE productos SET nombre=?, precio_compra=?, precio_venta=?, cantidad_stock=?, categoria_id=?, detalles=?, imagen=? WHERE id=?");
-    $rq->execute([$nombre, $precio_compra, $precio_venta, $cantidad_stock, $categoria, $detalles, $image, $id]);
+    $rq->execute([$nombre, $precio_compra, $precio_venta_con_descuento, $cantidad_stock, $categoria, $detalles, $image, $id]);
     
     header('location: /jajoguapy/admin/productos/index.php?msg=updated');
-    exit; // Asegúrate de hacer un exit después de redirigir
+    exit; 
 }
 ?>
 
@@ -81,6 +91,10 @@ if (isset($_POST['sub'])) {
                 <option <?= ($data['categoria_id'] == $dt['id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= htmlspecialchars($dt['nombre']) ?></option>
                 <?php endforeach; ?>
               </select>
+            </div>
+            <div class="form-group">
+              <label>Descuento de la Categoría:</label>
+              <input type="text" class="form-control" value="<?= $descuento_categoria * 100 ?>%" readonly>
             </div>
             <div class="form-group">
               <button name="sub" class="btn btn-warning btn-block">Modificar</button>

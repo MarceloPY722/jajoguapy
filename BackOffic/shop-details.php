@@ -5,9 +5,12 @@
 $idu = $_SESSION['id'];
 $id = $_GET['id'];
 $date = date("Y-m-d");
-$req = $bd->query("SELECT * FROM productos WHERE id=$id");
+$req = $bd->query("SELECT p.*, c.descuentos FROM productos p JOIN categorias c ON p.categoria_id = c.id WHERE p.id = $id");
 $data = $req->fetch();
 $cat = $data['categoria_id'];
+$descuento = $data['descuentos'];
+$precio_final = $data['precio_venta'] * (1 - $descuento);
+
 if(isset($_POST['sub'])){
   $Q = $_POST['qte'];
   if ($Q > $data['cantidad_stock']) {
@@ -43,7 +46,7 @@ if(isset($_POST['sub'])){
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__pic__item">
-                                <img src="../admin/img/<?=$data['imagen']?>" alt="">
+                                <img src="../admin/img/<?= $data['imagen'] ?>" alt="">
                             </div>
                         </div>
                     </div>
@@ -57,7 +60,7 @@ if(isset($_POST['sub'])){
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <div class="product__details__text">
-                            <h4><?=$data['nombre']?></h4>
+                            <h4><?= $data['nombre'] ?></h4>
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -66,7 +69,7 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h3>
+                            <h3>₲ <?= number_format($precio_final, 0, ',', '.') ?></h3>
                             <div class="status">
                                 <?php if ($data['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
@@ -123,19 +126,23 @@ if(isset($_POST['sub'])){
         </div>
         <div class="row">
             <?php
-            $qer = $bd->prepare("SELECT * FROM productos WHERE categoria_id = ? AND id != ? LIMIT 4");
+            $qer = $bd->prepare("SELECT p.*, c.descuentos FROM productos p JOIN categorias c ON p.categoria_id = c.id WHERE p.categoria_id = ? AND p.id != ? LIMIT 4");
             $qer->execute([$cat, $id]);
 
             while ($relatedData = $qer->fetch()):
+                $relatedDescuento = $relatedData['descuentos'];
+                $relatedPrecioFinal = $relatedData['precio_venta'] * (1 - $relatedDescuento);
             ?>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="../admin/img/<?=$relatedData['imagen']?>">
-                            <span class="label"></span>
+                        <div class="product__item__pic set-bg" data-setbg="../admin/img/<?= $relatedData['imagen'] ?>">
+                            <?php if ($relatedDescuento > 0): ?>
+                                <span class="discount-label">-<?= $relatedDescuento * 100 ?>%</span>
+                            <?php endif; ?>
                         </div>
                         <div class="product__item__text">
-                            <h6><?=$relatedData['nombre']?></h6>
-                            <a href="shop-details.php?id=<?= $relatedData['id']?>" class="add-cart">+ Añadir al Carrito</a>
+                            <h6><?= $relatedData['nombre'] ?></h6>
+                            <a href="shop-details.php?id=<?= $relatedData['id'] ?>" class="add-cart">+ Añadir al Carrito</a>
                             <div class="rating">
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
@@ -143,7 +150,7 @@ if(isset($_POST['sub'])){
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5>₲ <?= number_format($relatedData['precio_venta'], 0, ',', '.') ?>
+                            <h5>₲ <?= number_format($relatedPrecioFinal, 0, ',', '.') ?>
                                 <?php if ($relatedData['cantidad_stock'] > 0): ?>
                                     <span class="stock-status available">Disponible</span>
                                 <?php else: ?>
@@ -159,58 +166,53 @@ if(isset($_POST['sub'])){
 </section>
 
 <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__logo">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__logo">
                         <a href="#"><img src="/jajoguapy/assets/logoW.png" alt="" class="footer-logo"></a>
-
-                        </div>
-                        <p>Tu Futuro Tecnologico en la palma de tu mano.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
                     </div>
+                    <p>Tu Futuro Tecnologico en la palma de tu mano.</p>
+                    <a href="#"><img src="img/payment.png" alt=""></a>
                 </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
                 <div class="footer__widget">
-                <h6>Tienda</h6>
-                <ul>
-                 <li><a href="tienda.php?categoria=1">Celulares</a></li>
-                 <li><a href="tienda.php?categoria=11">Smart TV</a></li>
-                 <li><a href="tienda.php?categoria=13">Notebooks</a></li>
-                 <li><a href="tienda.php?categoria=12">SmartWatch</a></li>
-                <li><a href="tienda.php?categoria=3">Media Player</a></li>
-                </ul>
-        </div>
-</div>
-
-                <div class="col-lg-5 col-md-3 col-sm-6">
-                    <div class="footer__widget" id="contacto">
-                        <h6>Atención al Cliente</h6>
-                        <ul>
-                            <li><a href="#">Contactanos</a></li>
-                            <li><a href="#">Metodos de Pagos</a></li>
-                            <li><a href="#">Delivery</a></li>
-                           
-                        </ul>
-                    </div>
+                    <h6>Tienda</h6>
+                    <ul>
+                        <li><a href="tienda.php?categoria=1">Celulares</a></li>
+                        <li><a href="tienda.php?categoria=11">Smart TV</a></li>
+                        <li><a href="tienda.php?categoria=13">Notebooks</a></li>
+                        <li><a href="tienda.php?categoria=12">SmartWatch</a></li>
+                        <li><a href="tienda.php?categoria=3">Media Player</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="footer__copyright__text">
-                        
-                        <p>Todos los derechos reservado | JajoguaPy © 
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script>
-                        </p>
-                        
-                    </div>
+            <div class="col-lg-5 col-md-3 col-sm-6">
+                <div class="footer__widget" id="contacto">
+                    <h6>Atención al Cliente</h6>
+                    <ul>
+                        <li><a href="#">Contactanos</a></li>
+                        <li><a href="#">Metodos de Pagos</a></li>
+                        <li><a href="#">Delivery</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </footer>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="footer__copyright__text">
+                    <p>Todos los derechos reservado | JajoguaPy © 
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
@@ -243,5 +245,16 @@ if(isset($_POST['sub'])){
     .out-of-stock {
         background-color: red;
         color: white;
+    }
+
+    .discount-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
     }
 </style>

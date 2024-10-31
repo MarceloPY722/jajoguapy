@@ -65,6 +65,9 @@ $data = $req->fetch();
                       <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
                       <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
                    </ul>
+                   <div class="m-t-40">
+                       <a href="./alert/delete_account.php" class="btn btn-danger" onclick>Borrar Cuenta</a>
+                   </div>
               </div>
           </div>
       </div>
@@ -211,4 +214,6 @@ p {
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
+</style>
 
+<?php include './include/footer.php'?>
