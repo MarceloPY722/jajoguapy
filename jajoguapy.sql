@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 31, 2024 at 05:27 PM
+-- Generation Time: Nov 01, 2024 at 07:13 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -119,6 +119,22 @@ INSERT INTO `ciudades` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `envios`
+--
+
+CREATE TABLE `envios` (
+  `id` int NOT NULL,
+  `pago_id` int NOT NULL,
+  `direccion_envio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `departamento_id` int NOT NULL,
+  `ciudad` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telef_contacto` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datos_adicionales` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pagos`
 --
 
@@ -126,12 +142,15 @@ CREATE TABLE `pagos` (
   `id` int NOT NULL,
   `usuario_id` int NOT NULL,
   `producto_id` int NOT NULL,
-  `categoria_id` int NOT NULL,
   `cantidad` int NOT NULL,
-  `precio_unitario` float NOT NULL,
-  `total` float NOT NULL,
-  `fecha_pago` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=armscii8;
+  `precio` float NOT NULL,
+  `fecha_pago` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `email_pagos` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_tarjeta` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `numero_tarjeta` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vencimiento` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cvv` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -145,6 +164,16 @@ CREATE TABLE `pedidos` (
   `usuario_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `fecha`, `usuario_id`) VALUES
+(80, '2024-11-01', 49),
+(82, '2024-11-01', 49),
+(83, '2024-11-01', 49),
+(84, '2024-11-01', 49);
+
 -- --------------------------------------------------------
 
 --
@@ -157,6 +186,16 @@ CREATE TABLE `pedidos_productos` (
   `pedido_id` int NOT NULL DEFAULT '0',
   `cantidad` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pedidos_productos`
+--
+
+INSERT INTO `pedidos_productos` (`id`, `producto_id`, `pedido_id`, `cantidad`) VALUES
+(76, 25, 80, 1),
+(78, 20, 82, 1),
+(79, 33, 83, 1),
+(80, 49, 84, 1);
 
 -- --------------------------------------------------------
 
@@ -208,7 +247,7 @@ INSERT INTO `productos` (`id`, `nombre`, `precio_compra`, `precio_venta`, `image
 (52, 'XIAOMI 75″ QLED 4K SMART MI', 7000000, 8000000, '64897dd2-09a1-4357-b6d1-18c307804620-removebg-preview.png', 10, ' •Resolución de la pantalla: 4K Ultra HD (3840 x 2160p)\r\n •Pantalla: QLED de 75″\r\n •Audio: Dolby Audio y DTS-HD\r\n •Procesador grafico: Mali G52 MP2\r\n •Conectividad: Wi-Fi y Bluetooth 5.0', 11, 0),
 (53, 'IPHONE 15 128GB NEGRO C/CHIP', 4500000, 6000000, 'IPHONE-15-N-removebg-preview.png', 15, 'YA DISPONIBLE!\r\nDiseño resistente\r\n\r\nEl novedoso diseño del iPhone 15 incorpora una parte trasera fabricada con vidrio tintado en masa. Gracias a la estructura de aluminio de calidad aeroespacial y al proceso de doble intercambio iónico que aplicamos al vidrio, este iPhone aguanta, aguanta y aguanta.\r\n\r\nDynamic Island\r\nLa Dynamic Island llega al iPhone 15 y sabe qué es importante. Te muestra alertas y actividades en tiempo real para que no se te escape nada mientras sigues a lo tuyo. Podrás controlar tu música, comprobar el estado de tu vuelo, ver quién te llama y muchas más cosas.\r\n\r\nPantalla Super Retina XDR\r\nLa pantalla del iPhone 15 es hasta el doble de brillante a pleno sol que en el iPhone 14, una diferencia digna de ver.\r\n\r\nConexión USB-C\r\nEl nuevo conector USB-C ha llegado para hacerte la vida más fácil. Puedes cargar tu Mac o iPad con el mismo cable que usas para tu iPhone 15, o incluso cargar el Apple Watch y los AirPods directamente conectándolos a él. Menos líos en tu vida.\r\n\r\nNuevo sistema de cámaras\r\n\r\nAhora la cámara principal de 48 Mpx hace fotos en una resolución altísima. El iPhone 15 refleja con el máximo detalle los paisajes más grandiosos o tus pequeños momentos del día a día.\r\n\r\nSus tres niveles de zoom de calidad óptica te servirán encuadrar la imagen perfecta sin moverte ni un milímetro.\r\n\r\nClava los primeros planos con el teleobjetivo x2. Elige x1 para hacer fotos supernítidas a media distancia. Y si quieres ampliar la escena, usa el ultra gran angular con x0,5\r\n\r\nChip A16\r\nEl chip A16 Bionic está detrás de las prestaciones más punteras, como la fotografía computacional empleada en las fotos de 24 Mpx y los retratos avanzados. El rendimiento superfluido se ejecuta con la máxima eficiencia y autonomía.\r\n\r\nDuración de batería\r\nAutonomía para un día entero. O para toda una temporada. El iPhone 15 te da hasta 20 horas de reproducción de vídeo de forma continuada.', 1, 0),
 (56, 'APPLE WATCH ULTRA 2', 6000000, 6300000, '882408-removebg-preview.png', 10, 'El Apple Watch Ultra 2 está pensado para ofrecer un rendimiento bestial. La caja de titanio es ligera, robusta y resistente a la corrosión, con los bordes elevados para proteger el cristal de zafiro de impactos laterales.\r\n\r\nPantalla más brillante\r\nLa pantalla más grande y brillante en un Apple Watch alcanza los 3.000 nits de brillo para que lo veas todo claro, incluso a pleno sol. Son 1000 nits más respecto al Apple Watch Ultra 2. Además, si hay poca luz, el brillo baja a 1 nit. Por último, ahora el modo Noche se activa automáticamente cuando está oscuro.\r\n\r\nBotón Acción\r\nEl botón Acción es personalizable para que puedas controlar rápidamente un muchísimas de funciones. Por ejemplo, puedes usarlo para empezar un entreno, marcar puntos de referencia con la Brújula o iniciar una inmersión.\r\n\r\nDetección de accidentes\r\nEl Apple Watch Ultra 2 llama al 112 si has tenido un accidente de coche, has sufrido una caída grave al suelo o necesitas asistencia urgente. Perfeto para llevar a cabo tus aventuras más épicas sin preocupaciones.\r\n\r\nPotencia para ir por delante\r\n\r\nEl Apple Watch Ultra 2 tiene el chip más eficiente y rápido. Con una CPU de doble núcleo, tiene 5.600 millones de transistores, un 60 % más que el Apple Watch Ultra 1. También un Neural Engine de cuatro núcleos, que procesa las tareas de aprendizaje automático hasta el doble de rápido.\r\n\r\nFunción Doble toque\r\n¿Tienes las manos ocupadas? Toca el pulgar con el índice dos veces para hacer cosas como responder una llamada, abrir una notificación y poner o pausar música.\r\n\r\nDoble antena GPS\r\nEl GPS de doble frecuencia y alta precisión te permite seguir tus rutas con exactitud. Esto hace que el Apple Watch Ultra 2 sea el reloj más fiable en entornos urbanos llenos de obstáculos.\r\n\r\nDoble altavoz y conjunto de tres micrófonos\r\nSu doble altavoz aumenta el volumen de las llamadas y una sirena emite un sonido de 86 decibelios para pedir ayuda incluso a a 180 metros de distancia.\r\n\r\nEn entornos con mucho viento, el Apple Watch Ultra 2 selecciona el mejor micrófono para el audio.\r\n\r\nProfundímetro\r\nEl Apple Watch Ultra 2 viene equipado con profundímetro. Así tendrás a mano todos los datos y funciones que necesitas para practicar buceo y apnea a profundidades de hasta 40 metros. Incluso es capaz de medir la temperatura del agua.\r\n\r\nAutonomía\r\nCuando llevas dos jornadas con la mochila a cuestas, afrontas la etapa final de un triatlón o buceas alrededor de un arrecife de coral, lo último que quieres es quedarte sin batería. Con el Apple Watch Ultra 2 tiene la mayor duración de batería en un Apple Watch. Con hasta 36 horas en uso normal o hasta 72 horas en modo de bajo consumo.', 12, 0),
-(57, 'Apple iPhone 12 A2403 LZ/A Rojo', 2000000, 2500000, 'phone1-removebg-preview.png', 33, 'El iPhone 12 de Apple, lanzado en octubre de 2020, se presenta como una evolución significativa en la gama de smartphones de la compañía, destacando por su renovado diseño y mejoras en varias características. Este modelo, que se espera tenga un amplio mercado potencial, incluye cambios notables en su diseño y una doble cámara que, aunque conservadora, plantea interrogantes sobre su suficiencia frente a modelos anteriores y competidores.\r\n\r\nEl dispositivo cuenta con una pantalla OLED Retina de 6,1 pulgadas, con resolución de 2532 x 1170 píxeles y una densidad de 460 ppi, ofreciendo una experiencia visual de alta calidad. Está impulsado por el procesador Apple A14 Bionic y opera con iOS 14. En términos de almacenamiento, ofrece versiones de 64 GB, 128 GB y 256 GB. La cámara principal de 12MP y la secundaria gran angular de 12MP, junto con capacidades de grabación de video en 4K Dolby Vision, componen un sistema de cámara versátil.\r\n\r\nEl diseño del iPhone 12 retoma los bordes rectos, reminiscentes del iPhone 5, proporcionando una experiencia de uso diferente y un agarre más cómodo. A pesar de la familiaridad de sus bordes curvados en modelos anteriores y en la competencia, el nuevo diseño ha sido bien recibido. La resistencia al agua IP68 y la inclusión de la carga rápida de 18W e inalámbrica MagSafe de 15W son otras características destacadas.\r\n\r\nLa pantalla OLED es una mejora significativa respecto al modelo anterior, con soporte para HDR 10 y una satisfactoria visibilidad tanto en interiores como en exteriores. Sin embargo, la falta de una tasa de refresco superior a 60 Hz es una omisión notable, especialmente en comparación con la competencia. A pesar de ello, el panel está bien calibrado de fábrica, aunque carece de amplias posibilidades de personalización.\r\n\r\nEl rendimiento del iPhone 12 es excepcional, manejando con facilidad tanto las tareas cotidianas como las más exigentes. Su capacidad de procesamiento y la fluidez en el uso diario son puntos fuertes, respaldados por buenos resultados en benchmarks. La llegada del 5G es una adición importante, aunque su utilidad dependerá de la cobertura y el operador.\r\n\r\nEl sistema operativo iOS 14 ofrece estabilidad y algunas novedades como los widgets y una nueva forma de organizar aplicaciones, aunque las posibilidades de personalización siguen siendo limitadas. La autonomía del iPhone 12, aunque suficiente para un día de uso intensivo, no representa un salto significativo respecto a modelos anteriores. La decisión de Apple de no incluir un cargador en la caja ha sido controversial, generando debate sobre el impacto ambiental y la conveniencia para el usuario.', 1, 0),
+(57, 'Apple iPhone 12 A2403 LZ/A Rojo', 2000000, 2500000, 'phone1-removebg-preview.png', 33, 'El iPhone 12 de Apple, lanzado en octubre de 2020, se presenta como una evolución significativa en la gama de smartphones de la compañía, destacando por su renovado diseño y mejoras en varias características. Este modelo, que se espera tenga un amplio mercado potencial, incluye cambios notables en su diseño y una doble cámara que, aunque conservadora, plantea interrogantes sobre su suficiencia frente a modelos anteriores y competidores.\r\n\r\nEl dispositivo cuenta con una pantalla OLED Retina de 6,1 pulgadas, con resolución de 2532 x 1170 píxeles y una densidad de 460 ppi, ofreciendo una experiencia visual de alta calidad. Está impulsado por el procesador Apple A14 Bionic y opera con iOS 14. En términos de almacenamiento, ofrece versiones de 64 GB, 128 GB y 256 GB. La cámara principal de 12MP y la secundaria gran angular de 12MP, junto con capacidades de grabación de video en 4K Dolby Vision, componen un sistema de cámara versátil.\r\n\r\nEl diseño del iPhone 12 retoma los bordes rectos, reminiscentes del iPhone 5, proporcionando una experiencia de uso diferente y un agarre más cómodo. A pesar de la familiaridad de sus bordes curvados en modelos anteriores y en la competencia, el nuevo diseño ha sido bien recibido. La resistencia al agua IP68 y la inclusión de la carga rápida de 18W e inalámbrica MagSafe de 15W son otras características destacadas.\r\n\r\nLa pantalla OLED es una mejora significativa respecto al modelo anterior, con soporte para HDR 10 y una satisfactoria visibilidad tanto en interiores como en exteriores. Sin embargo, la falta de una tasa de refresco superior a 60 Hz es una omisión notable, especialmente en comparación con la competencia. A pesar de ello, el panel está bien calibrado de fábrica, aunque carece de amplias posibilidades de personalización.\r\n\r\nEl rendimiento del iPhone 12 es excepcional, manejando con facilidad tanto las tareas cotidianas como las más exigentes. Su capacidad de procesamiento y la fluidez en el uso diario son puntos fuertes, respaldados por buenos resultados en benchmarks. La llegada del 5G es una adición importante, aunque su utilidad dependerá de la cobertura y el operador.\r\n\r\nEl sistema operativo iOS 14 ofrece estabilidad y algunas novedades como los widgets y una nueva forma de organizar aplicaciones, aunque las posibilidades de personalización siguen siendo limitadas. La autonomía del iPhone 12, aunque suficiente para un día de uso intensivo, no representa un salto significativo respecto a modelos anteriores. La decisión de Apple de no incluir un cargador en la caja ha sido controversial, generando debate sobre el impacto ambiental y la conveniencia para el usuario.', 17, 0),
 (58, 'Google Chromecast con Google TV', 500000, 615000, '1_33_1_1-removebg-preview.png', 10, ' •Resolución máxima: 4K con HDR, 60 FPS\r\n •Formatos de Video: Dolby Vision, HDR10 y HDR10+\r\n •Conexión inalámbrica: Wifi 802.11ac (2.4 GHz/5 GHz) y Bluetooth\r\n •Sistema operativo: Android TV\r\n •Puerto y conector: HDMI y USB-C', 3, 0),
 (59, 'Honor X6B JDY-LX3P Dual 128 GB', 700000, 787000, 'file.png', 40, 'El Honor X6B JDY-LX3P Dual ofrece una experiencia visual inmersiva con su amplia pantalla LCD TFT de 6.56\" y una resolución de 720 x 1620p, perfecta para ver contenido y navegar cómodamente. Equipado con una cámara principal dual de 50 MP + 2 MP, permite capturar fotografías nítidas y detalladas, mientras que su cámara frontal de 5 MP es ideal para selfies y videollamadas de calidad. Este dispositivo combina funcionalidad y rendimiento en un diseño accesible, ideal para quienes buscan un smartphone con buenas capacidades fotográficas y una pantalla de excelente tamaño.', 1, 0);
 
@@ -259,7 +298,6 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `usuario`, `contrasena`, `correo`, `rol`, `nombre`, `apellido`, `telefono`, `imagen`, `ciudad_id`) VALUES
 (40, 'M722', '81dc9bdb52d04dc20036dbd8313ed055', 'marcelo@gmail.com', 'admin', 'BENITEZ RUIZ DIAZ', '', 971355982, 'Screenshot 2024-09-10 084131.png', NULL),
 (42, 'M783', '81dc9bdb52d04dc20036dbd8313ed055', 'markbenzar722@gmail.com', 'admin', 'Marcelo', '', 971631956, 'images (2).jpeg', NULL),
-(47, 'Jazz', '81dc9bdb52d04dc20036dbd8313ed055', 'jazz@gmail.com', 'cliente', 'jazz', 'jazz', 97533245, '', 1),
 (48, 'Diego', NULL, 'diego@gmail.com', 'cliente', 'diego', 'arguello', 988776655, '', 16),
 (49, 'Marcelo', '81dc9bdb52d04dc20036dbd8313ed055', 'marceloariel722@gmail.com', 'cliente', 'Marcelo', '', 971631959, 'R.jpeg', 12),
 (50, 'M724', NULL, 'marceloariel872@gmail.com', 'admin', 'Mark', 'Benitez', 98666687, '', 17);
@@ -296,13 +334,20 @@ ALTER TABLE `ciudades`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `envios`
+--
+ALTER TABLE `envios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pago_id` (`pago_id`),
+  ADD KEY `departamento_id` (`departamento_id`);
+
+--
 -- Indexes for table `pagos`
 --
 ALTER TABLE `pagos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usuario_id` (`usuario_id`),
-  ADD KEY `producto_id` (`producto_id`),
-  ADD KEY `categoria_id` (`categoria_id`);
+  ADD KEY `producto_id` (`producto_id`);
 
 --
 -- Indexes for table `pedidos`
@@ -368,22 +413,28 @@ ALTER TABLE `ciudades`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT for table `envios`
+--
+ALTER TABLE `envios`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `pedidos_productos`
 --
 ALTER TABLE `pedidos_productos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `productos`
@@ -421,12 +472,18 @@ ALTER TABLE `abastecimientos_productos`
   ADD CONSTRAINT `FK__productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `envios`
+--
+ALTER TABLE `envios`
+  ADD CONSTRAINT `envios_ibfk_1` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `envios_ibfk_2` FOREIGN KEY (`departamento_id`) REFERENCES `ciudades` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `pagos`
 --
 ALTER TABLE `pagos`
   ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `pagos_ibfk_3` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pedidos`

@@ -23,7 +23,7 @@
      
       <div class="logo">
         <a href="index.php">
-         
+         <img src="/jajoguapy/assets/logoW2.png" alt="">
         </a>
       </div>
 
@@ -57,6 +57,28 @@
           <i class="entypo-book"></i>
           <span class="title">Ver Informes</span>
         </a>
+      </li>
+
+    
+      <li class="has-sub <?= ($title=="Ventas" || $title=="add ventas")?'active':''?>">
+        <a href="/jajoguapy/admin/pagos/" style="color:#fff">
+        <i class="entypo entypo-bag"></i>
+          <span class="title">Ventas</span>
+        </a>
+        <ul>
+          <li class="<?= ($title=="proveedor")?'active':'' ?>">
+            <a href="/jajoguapy/admin/pagos/" style="color:#fff">
+              <i class="entypo-list"></i>
+              <span class="title">Lista de Ventas</span>
+            </a>
+          </li>
+          <li class="<?= ($title=="add proveedor")?'active':'' ?>">
+            <a href="/jajoguapy/admin/pagos/add.php" style="color:#fff">
+              <i class="entypo-plus-squared"></i>
+              <span class="title">Agregar Ventas</span>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <!-- Start item menu -->
@@ -145,6 +167,7 @@
           </li>
         </ul>
       </li>
+
       <li class="has-sub <?= ($title=="pedidos" || $title=="add pedidos")?'active':''?>">
         <a href="/admin/pedidos/" style="color:#fff">
           <i class="entypo-basket"></i>

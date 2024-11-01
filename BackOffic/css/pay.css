@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* start: Globals */
+
 * {
     margin: 0;
     padding: 0;
@@ -18,7 +18,6 @@ body {
     padding: 0 16px;
 }
 /* end: Globals */
-
 
 
 /* start: Payment */
@@ -311,11 +310,55 @@ input:checked + .payment-method-item::before {
 .payment-form-submit-button > i {
     margin-right: 8px;
 }
-/* end: Payment */
 
+/* Nueva sección para mostrar los productos */
+.payment-products {
+    margin-top: 24px;
+}
+.payment-products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+.payment-products-table th,
+.payment-products-table td {
+    padding: 8px;
+    border: 1px solid var(--gray-200);
+    text-align: center;
+}
+.payment-products-table th {
+    background-color: var(--gray-100);
+    font-weight: 600;
+}
+.payment-products-table tfoot td {
+    font-weight: 600;
+    color: var(--indigo-500);
+}
 
+/* Botón para mostrar/ocultar la tabla de productos */
+.payment-toggle-button {
+    background-color: var(--indigo-500);
+    border-radius: 8px;
+    outline: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    font-weight: 600;
+    padding: 16px;
+    transition: all .15s ease-in-out;
+    margin-top: 24px;
+}
+.payment-toggle-button:hover {
+    background-color: var(--indigo-600);
+}
+.payment-toggle-button > i {
+    margin-right: 8px;
+}
 
-/* start: Breakpoints */
 @media screen and (max-width: 767px) {
     .payment-wrapper {
         grid-template-columns: 1fr;

@@ -1,7 +1,7 @@
 <?php include './include/head.php'?>
 <?php include './include/cnx.php'?>
 <?php include './include/menu.php'?>
-    
+
 <section class="hero">
     <div class="hero__slider owl-carousel">
         <div class="hero__items set-bg" data-setbg="assets/o.jpg">
@@ -48,7 +48,7 @@
     <h4>Productos Nuevos</h4>
 </div>
 
-<!--Seccion de Productos -->
+
 <section id="product" class="product spad">
     <div class="container">
         <div class="row">
@@ -68,7 +68,6 @@
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="admin/img/<?= $data['imagen'] ?>">
-                        
                         <?php if ($descuento > 0): ?>
                             <span class="discount-label">-<?= $descuento * 100 ?>%</span>
                         <?php endif; ?>
@@ -83,12 +82,13 @@
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                         </div>
-                        <?php if ($descuento > 0): ?>
-                            <h5 class="precio-con-descuento">₲ <?= number_format($precio_con_descuento, 0, ',', '.') ?></h5>
-                            <h5 class="precio-original">₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h5>
-                        <?php else: ?>
-                            <h5>₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?></h5>
-                        <?php endif; ?>
+                        <h5>
+                            <?php if ($descuento > 0): ?>
+                                <span class="precio-con-descuento">₲ <?= number_format($precio_con_descuento, 0, ',', '.') ?></span>
+                            <?php else: ?>
+                                ₲ <?= number_format($data['precio_venta'], 0, ',', '.') ?>
+                            <?php endif; ?>
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -227,60 +227,25 @@
         padding: 20px;
     }
 
-    .NewProduct h4 {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 2rem;
-    }
-
-    .product__item__pic, .hero__items .set-bg, .categories__hot__deal img, .footer__logo img {
-        width: 100%;
-        height: auto;
-    }
-
-    .set-bg {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-
-    .hero__items, .categories__hot__deal, .product__item__pic {
-        max-width: 100%;
-        background-size: cover;
-        background-position: center center;
-    }
-
-    .product__item__pic {
-        position: relative;
-        padding-top: 100%;
-    }
-
-    @media (max-width: 992px) {
-        .product__item__pic, .hero__items, .categories__hot__deal img {
-            width: 100%;
-            height: auto;
-        }
-    }
-
     .discount-label {
         position: absolute;
         top: 10px;
         right: 10px;
         background-color: red;
         color: white;
-        padding: 5px 10px;
+        padding: 5px;
         border-radius: 5px;
-        font-weight: bold;
-    }
-
-    .precio-original {
-        text-decoration: line-through;
-        color: gray;
-    }
-
-    .precio-con-descuento {
-        color: green;
         font-weight: bold;
     }
 </style>
 
-<?php include './include/footer.php'?>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/mixitup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
