@@ -1,138 +1,166 @@
 <?php
-// Incluir archivos necesarios
 include './include/head.php';
 include './include/cnx.php';
 include './include/menu.php';
 
-// Verificar si la sesión ya está iniciada
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 $total = 0;
 $products = [];
-$paymentMethod = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total = $_POST['total'];
     $products = json_decode($_POST['products'], true); 
-    $paymentMethod = isset($_POST['paymentMethod']) ? $_POST['paymentMethod'] : '';
 } else {
-    header("Location: shopping-details.php");
+    header("Location: shop-details.php");
     exit();
 }
 
-// Obtener la lista de ciudades
-$ciudades = $bd->query("SELECT * FROM ciudades");
+$idu = $_SESSION['id'];
+$date = date("Y-m-d");
+if (isset($_POST['sub'])) {
+    foreach ($products as $product) {
+        $id = $product['id'];
+        $Q = $product['quantity'];
+        $req = $bd->query("SELECT p.*, c.descuentos FROM productos p JOIN categorias c ON p.categoria_id = c.id WHERE p.id = $id");
+        $data = $req->fetch();
+        if ($Q > $data['cantidad_stock']) {
+            echo "<script>alert('Este Producto no está disponible por stock');</script>";
+        } else {
+            $bd->beginTransaction();
+            $qr = $bd->prepare("INSERT INTO pedidos(fecha, usuario_id) VALUES(?, ?)");
+            $qr->execute([$date, $idu]);
+            $pedido_id = $bd->lastInsertId();
+            $qr = $bd->prepare("INSERT INTO Ventas(producto_id, pedido_id, cantidad) VALUES(?, ?, ?)");
+            $qr->execute([$id, $pedido_id, $Q]);
+            $bd->commit();
+        }
+    }
+    header('location: factura.php');
+}
 ?>
-<link rel="stylesheet" href="./css/tailwindcss-colors.css">
-<link rel="stylesheet" href="./css/pay.css">
+    <title>Detalles del Pago</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/tailwindcss-colors.css">
+    <link rel="stylesheet" href="./css/pay.css">
+    <style>
+        
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 1s ease;
+       }
+   
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
 
-<section class="payment-section">
-    <div class="container">
-        <div class="payment-wrapper">
-            <div class="payment-left">
-                <form id="shipping-form" class="payment-form" action="./cargando.php" method="POST">
-                    <h1 class="payment-title">Detalles de Envío</h1>
-                    <div class="payment-form-group">
-                        <input type="text" name="direccion" placeholder=" " class="payment-form-control" id="direccion" required>
-                        <label for="direccion" class="payment-form-label payment-form-label-required">Dirección</label>
-                    </div>
-                    <div class="payment-form-group">
-                        <select name="ciudad" class="payment-form-control" id="ciudad" required>
-                            <option value="">Selecciona un Departamento</option>
-                            <?php while ($ciudad = $ciudades->fetch()): ?>
-                                <option value="<?= $ciudad['id'] ?>"><?= $ciudad['nombre'] ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                        <label for="ciudad" class="payment-form-label payment-form-label-required">Departamento</label>
-                    </div>
-                    <div class="payment-form-group">
-                        <input type="text" name="ciudad_nombre" placeholder=" " class="payment-form-control" id="ciudad_nombre" required>
-                        <label for="ciudad_nombre" class="payment-form-label payment-form-label-required">Ciudad</label>
-                    </div>
-                    <div class="payment-form-group">
-                        <input type="text" name="telefono" placeholder=" " class="payment-form-control" id="telefono" required>
-                        <label for="telefono" class="payment-form-label payment-form-label-required">Teléfono de Contacto</label>
-                    </div>
-                    
-                    <div class="payment-form-group">
-                        <textarea name="datos_adicionales" placeholder=" " class="payment-form-control" id="datos_adicionales"></textarea>
-                        <label for="datos_adicionales" class="payment-form-label">Datos Adicionales</label>
-                    </div>
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: white;
+            transition: color 1s ease;
+        }
 
-                    <!-- Botón para mostrar/ocultar la tabla de productos -->
-                    <button type="button" class="payment-toggle-button" onclick="toggleProductsTable()">
-                        <i class="entypo entypo-circled-info"></i> Ver Productos Seleccionados
-                    </button>
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-                    <!-- Tabla de productos (inicialmente oculta) -->
-                    <div class="payment-products" id="products-table" style="display: none;">
-                        <h1 class="payment-title">Productos Seleccionados</h1>
-                        <table class="payment-products-table">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($products as $product): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($product['name']) ?></td>
-                                        <td><?= htmlspecialchars($product['quantity']) ?></td>
-                                        <td>₲ <?= htmlspecialchars($product['price']) ?></td>
-                                        <td>₲ <?= htmlspecialchars($product['price'] * $product['quantity']) ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-right">Total:</td>
-                                    <td>₲ <?= htmlspecialchars($total) ?></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <input type="hidden" name="usuario_id" value="<?= $_SESSION['id'] ?>">
-                </form>
+        .success-message {
+            font-size: 48px;
+            color: #00b300;
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .success-message svg {
+            width: 48px;
+            height: 48px;
+            margin-right: 16px;
+        }
+
+        .show-success {
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text.hide,
+        .loading-spinner.hide {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="loading-container">
+            <div class="loading-text">Procesando Pago...</div>
+            <div class="loading-spinner"></div>
+            <div class="success-message">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#00b300"/>
+                </svg>
+                Pago Exitoso!!
             </div>
+        </div>
+    </div>
 
-            <!-- Formulario de Pago -->
+    <section class="payment-section">
+        <div class="container">
             <div class="payment-right">
-                <form id="payment-form" action="./cargando.php" method="POST" class="payment-form">
+                <form action="factura.php" method="POST" class="payment-form" id="payment-form">
                     <h1 class="payment-title">Detalles del Pago</h1>
+                    
                     <div class="payment-total">
                         <h6>Monto total: ₲ <span id="payment-amount"><?= htmlspecialchars($total) ?></span></h6>
                     </div>
                     
                     <div class="payment-method">
-                        <input type="radio" name="payment-method" id="method-1" onclick="setCardType('visa')" checked>
+                        <input type="radio" name="payment-method" id="method-1" checked>
                         <label for="method-1" class="payment-method-item">
-                            <img src="./img/pay/visa.png" alt="" id="visa-image">
+                            <img src="./img/pay/visa.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-2" onclick="setCardType('mastercard')">
+                        <input type="radio" name="payment-method" id="method-2">
                         <label for="method-2" class="payment-method-item">
-                            <img src="./img/pay/mastercard.png" alt="" id="mastercard-image">
+                            <img src="./img/pay/mastercard.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-3" onclick="setCardType('discover')">
+                        <input type="radio" name="payment-method" id="method-3">
                         <label for="method-3" class="payment-method-item">
-                            <img src="./img/pay/Discover.png" alt="" id="discover-image">
+                            <img src="./img/pay/Discover.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-4" onclick="setCardType('amex')">
+                        <input type="radio" name="payment-method" id="method-4">
                         <label for="method-4" class="payment-method-item">
-                            <img src="./img/pay/American.png" alt="" id="american-image">
+                            <img src="./img/pay/American.png" alt="">
                         </label>
                     </div>
-
                     <div class="payment-form-group">
                         <input type="email" name="email" placeholder=" " class="payment-form-control" id="email" required>
                         <label for="email" class="payment-form-label payment-form-label-required">Email Address</label>
                     </div>
                     <div class="payment-form-group">
-                        <input type="text" name="card-number" placeholder=" " class="payment-form-control" id="card-number" required oninput="validateCardNumber()">
+                        <input type="text" name="card-number" placeholder=" " class="payment-form-control" id="card-number" required>
                         <label for="card-number" class="payment-form-label payment-form-label-required">Número de Tarjeta</label>
                     </div>
                     <div class="payment-form-group-flex">
@@ -141,96 +169,31 @@ $ciudades = $bd->query("SELECT * FROM ciudades");
                             <label for="expiry-date" class="payment-form-label payment-form-label-required">Fecha de Vencimiento</label>
                         </div>
                         <div class="payment-form-group">
-                            <input type="text" name="cvv" placeholder=" " class="payment-form-control" id="cvv" required oninput="validateCVV()">
+                            <input type="text" name="cvv" placeholder=" " class="payment-form-control" id="cvv" required>
                             <label for="cvv" class="payment-form-label payment-form-label-required">CVV</label>
                         </div>
                     </div>
 
                     <input type="hidden" name="total" value="<?= htmlspecialchars($total) ?>">
                     <input type="hidden" name="products" value='<?= htmlspecialchars(json_encode($products)) ?>'>
-                    <input type="hidden" name="paymentMethod" id="paymentMethod" value="<?= htmlspecialchars($paymentMethod) ?>">
-                    <button type="button" class="payment-form-submit-button" onclick="validateForms()"><i class="ri-wallet-line"></i> Pagar</button>
+
+                    <button type="submit" class="payment-form-submit-button"><i class="ri-wallet-line"></i> Pagar</button>
                 </form>
             </div>
         </div>
-    </div>
-</section>
-<script src="./js/validacion.js"></script>
-<script>
-    let cardType = '';
+    </section>
 
-    function setCardType(type) {
-        cardType = type;
-        validateCardNumber();
-        validateCVV();
-    }
-
-    function validateCardNumber() {
-        const cardNumber = document.getElementById('card-number').value;
-        const cardNumberInput = document.getElementById('card-number');
-        let isValid = false;
-
-        switch(cardType) {
-            case 'mastercard':
-                isValid = /^5[1-5]\d{14}$/.test(cardNumber);
-                break;
-            case 'visa':
-                isValid = /^4\d{12}(\d{3})?$/.test(cardNumber); // Ajuste para Visa 13 o 16 dígitos
-                break;
-            case 'discover':
-                isValid = /^(6011|622|64[4-9]|65)\d{12}$/.test(cardNumber);
-                break;
-            case 'amex':
-                isValid = /^3[47]\d{13}$/.test(cardNumber);
-                break;
-            default:
-                isValid = false;
-        }
-
-        cardNumberInput.setCustomValidity(isValid ? '' : 'Número de tarjeta inválido');
-    }
-
-    function validateCVV() {
-        const cvv = document.getElementById('cvv').value;
-        const cvvInput = document.getElementById('cvv');
-        let isValid = false;
-
-        switch(cardType) {
-            case 'mastercard':
-            case 'visa':
-            case 'discover':
-                isValid = /^\d{3}$/.test(cvv);
-                break;
-            case 'amex':
-                isValid = /^\d{4}$/.test(cvv);
-                break;
-            default:
-                isValid = false;
-        }
-
-        cvvInput.setCustomValidity(isValid ? '' : 'CVV inválido');
-    }
-
-    function validateForms() {
-        const shippingForm = document.getElementById('shipping-form');
-        const paymentForm = document.getElementById('payment-form');
-
-        if (shippingForm.checkValidity() && paymentForm.checkValidity()) {
-            paymentForm.submit();
-        } else {
-            shippingForm.reportValidity();
-            paymentForm.reportValidity();
-        }
-    }
-
-    function toggleProductsTable() {
-        var table = document.getElementById("products-table");
-        if (table.style.display === "none") {
-            table.style.display = "block";
-        } else {
-            table.style.display = "none";
-        }
-    }
-</script>
-</body>
-</html>
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.querySelector('.loading-overlay').style.display = 'flex';
+            setTimeout(() => {
+                document.querySelector('.loading-text').classList.add('hide');
+                document.querySelector('.loading-spinner').classList.add('hide');
+                document.querySelector('.success-message').classList.add('show-success');
+                setTimeout(() => {
+                    this.submit();
+                }, 3000);
+            }, 10000);
+        });
+    </script>

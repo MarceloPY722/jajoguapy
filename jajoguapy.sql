@@ -146,7 +146,6 @@ CREATE TABLE `pagos` (
   `precio` float NOT NULL,
   `fecha_pago` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email_pagos` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tipo_tarjeta` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `numero_tarjeta` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vencimiento` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cvv` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL

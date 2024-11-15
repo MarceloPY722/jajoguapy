@@ -81,16 +81,14 @@ var baseurl = '';
 						Iniciar Sesion
 					</button>
 				</div>
-				<div class="form-group">
-					<em>-</em>
-				</div>
+				
 				<div class="form-group">
 					<a href="signup.php">Registrate</a>
 				</div>	
 			</form>
 			
 			<div class="login-bottom-links">
-				<a href="#" class="link">Olvidaste tu Contraseña?</a>
+				<a href="forgot_password.php" class="link">Olvidaste tu Contraseña?</a>
 				<br />
 				
 			</div>

@@ -53,35 +53,33 @@
       </li>
       
       <li class="has-sub">
-        <a href="" style="color:#fff">
+        <a href="/jajoguapy/admin/informes/index.php" style="color:#fff">
           <i class="entypo-book"></i>
           <span class="title">Ver Informes</span>
         </a>
       </li>
 
-    
-      <li class="has-sub <?= ($title=="Ventas" || $title=="add ventas")?'active':''?>">
-        <a href="/jajoguapy/admin/pagos/" style="color:#fff">
-        <i class="entypo entypo-bag"></i>
-          <span class="title">Ventas</span>
+      <li class="has-sub <?= ($title=="pedidos_prods" || $title=="add pedidos_prods")?'active':''?>">
+        <a href="/jajoguapy/admin/pedidos_prods/" style="color:#fff">
+          <i class="entypo-publish"></i>
+          <span class="title">Pedidos</span>
         </a>
         <ul>
-          <li class="<?= ($title=="proveedor")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pagos/" style="color:#fff">
+          <li class="<?= ($title=="pedidos_prods")?'active':'' ?>">
+            <a href="/jajoguapy/admin/pedidos_prods/" style="color:#fff">
               <i class="entypo-list"></i>
-              <span class="title">Lista de Ventas</span>
+              <span class="title">Lista de pedidos de productos</span>
             </a>
           </li>
-          <li class="<?= ($title=="add proveedor")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pagos/add.php" style="color:#fff">
+          <li class="<?= ($title=="add pedidos_prods")?'active':'' ?>">
+            <a href="/jajoguapy/admin/pedidos_prods/add.php" style="color:#fff">
               <i class="entypo-plus-squared"></i>
-              <span class="title">Agregar Ventas</span>
+              <span class="title">Agregar un pedido de producto</span>
             </a>
           </li>
         </ul>
       </li>
 
-      <!-- Start item menu -->
       <li class="has-sub <?= ($title=="category" || $title=="add category")?'active':'' ?>">
         <a href="/jajoguapy/admin/categoria/index.php" style="color:#fff">
           <i class="entypo-layout"></i>
@@ -102,8 +100,7 @@
           </li>
         </ul>
       </li>
-      <!-- End item menu -->
-      <!-- Start item menu -->
+     
       <li class="has-sub <?= ($title=="user" || $title=="add user")?'active':''?>">
         <a href="/jajoguapy/admin/user/" style="color:#fff">
           <i class="entypo-user"></i>
@@ -146,7 +143,6 @@
         </ul>
       </li>
 
-      <!--Proveedores-->
       <li class="has-sub <?= ($title=="proveedor" || $title=="add proveedor")?'active':''?>">
         <a href="/jajoguapy/admin/proveedor/" style="color:#fff">
           <i class="entypo-vcard"></i>
@@ -168,46 +164,6 @@
         </ul>
       </li>
 
-      <li class="has-sub <?= ($title=="pedidos" || $title=="add pedidos")?'active':''?>">
-        <a href="/admin/pedidos/" style="color:#fff">
-          <i class="entypo-basket"></i>
-          <span class="title">Pedidos</span>
-        </a>
-        <ul>
-          <li class="<?= ($title=="pedidos")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pedidos/" style="color:#fff">
-              <i class="entypo-list"></i>
-              <span class="title">Lista de Pedidos</span>
-            </a>
-          </li>
-          <li class="<?= ($title=="add pedidos")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pedidos/add.php" style="color:#fff">
-              <i class="entypo-plus-squared"></i>
-              <span class="title">Añadir un pedido</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="has-sub <?= ($title=="pedidos_prods" || $title=="add pedidos_prods")?'active':''?>">
-        <a href="/jajoguapy/admin/pedidos_prods/" style="color:#fff">
-          <i class="entypo-publish"></i>
-          <span class="title">Pedidos en Proceso</span>
-        </a>
-        <ul>
-          <li class="<?= ($title=="pedidos_prods")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pedidos_prods/" style="color:#fff">
-              <i class="entypo-list"></i>
-              <span class="title">Lista de pedidos de productos</span>
-            </a>
-          </li>
-          <li class="<?= ($title=="add pedidos_prods")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pedidos_prods/add.php" style="color:#fff">
-              <i class="entypo-plus-squared"></i>
-              <span class="title">Agregar un pedido de producto</span>
-            </a>
-          </li>
-        </ul>
-      </li>
       <li class="has-sub <?= ($title=="suministro" || $title=="add suministro")?'active':''?>">
         <a href="/jajoguapy/admin/suministro/" style="color:#fff">
           <i class="entypo-arrows-ccw"></i>

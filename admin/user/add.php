@@ -15,8 +15,9 @@ if(isset($_POST['submit'])){
     $correo = $_POST['correo'];
     $rol = $_POST['rol'];
     $ciudad = $_POST['ciudad'];
-    $req = $bd->prepare("INSERT INTO usuarios (usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $req->execute([$usuario, $contrasena, $correo, $rol, $nombre, $apellido, $telefono, $image, $ciudad]);
+    $nombre_mascota = $_POST['nombre_mascota']; // Nuevo campo
+    $req = $bd->prepare("INSERT INTO usuarios (usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id, nombre_mascota) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $req->execute([$usuario, $contrasena, $correo, $rol, $nombre, $apellido, $telefono, $image, $ciudad, $nombre_mascota]);
     header('location: /jajoguapy/admin/user/index.php?msg=added');
 }
 ?>
@@ -80,15 +81,17 @@ if(isset($_POST['submit'])){
               </select>
             </div>
             <div class="form-group">
+              <label for="nombre_mascota">Nombre de la Mascota</label>
+              <input type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" placeholder="Nombre de su primera mascota" aria-describedby="nombre_mascota">
+            </div>
+            <div class="form-group">
               <button name="submit" class="btn btn-primary btn-block">Agregar</button>
             </div>
           </form>
         </div>
       </div>
-
-
     </div>
-
-
   </div>
+</div>
 
+<?php include '../include/footer.php'; ?>

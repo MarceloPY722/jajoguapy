@@ -13,6 +13,6 @@ $(document).ready(function() {
 
     $('.quantity-input').on('input', updateTotal);
 
-    // Initial calculation
+  
     updateTotal();
 });

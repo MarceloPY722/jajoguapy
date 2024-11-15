@@ -77,11 +77,7 @@
                 Eliminar
               </a>
 
-              <a href=""
-                class="btn btn-info btn-sm btn-icon icon-left">
-                <i class="entypo-info"></i>
-                Perfil
-              </a>
+              
             </td>
           </tr>
           <?php

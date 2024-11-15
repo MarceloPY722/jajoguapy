@@ -1,35 +1,40 @@
 <?php include '../include/session.php'; ?>
 <?php include '../include/connexion.php'; ?>
 <?php
-$title = "commande"; 
-$id=$_GET['id'];
-$rq=$bd->prepare("select * from commandes where id=?");
-$rq->execute([$id]);
-$data = $rq->fetch();
-if(isset($_POST['submit'])){
-$date = $_POST['date'];
-$user = $_POST['user'];
-$req = $bd->prepare("update commandes set date=?,iduser=? where id=?");
-$req->execute([$date,$user,$id]);
-header('location: /Jajoguapy/admin/commande/index.php?msg=updated');
+$title = "Modificar Pedido"; 
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $rq = $bd->prepare("SELECT * FROM pedidos WHERE id = ?");
+    $rq->execute([$id]);
+    $data = $rq->fetch();
+
+    if (!$data) {
+        header('location: /Jajoguapy/admin/pedidos/index.php?msg=error');
+        exit();
+    }
+} else {
+    header('location: /Jajoguapy/admin/pedidos/index.php?msg=error');
+    exit();
 }
 
+if (isset($_POST['submit'])) {
+    $fecha = $_POST['fecha'];
+    $usuario_id = $_POST['usuario'];
+    $req = $bd->prepare("UPDATE pedidos SET fecha = ?, usuario_id = ? WHERE id = ?");
+    $req->execute([$fecha, $usuario_id, $id]);
+    header('location: /Jajoguapy/admin/pedidos/index.php?msg=updated');
+    exit();
+}
 ?>
 <?php include '../include/header.php'; ?>
 
 <div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
+
   <div class="main-content">
-
-    <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
     <hr />
-
 
     <div class="row">
       <h3>Modificar un Pedido</h3>
@@ -38,21 +43,21 @@ header('location: /Jajoguapy/admin/commande/index.php?msg=updated');
         <div class="card-body">
           <form method="post">
             <div class="form-group">
-              <label for="date">Fecha</label>
-              <input value="<?=$data['date']?>" type="date" name="date" id="date" class="form-control" placeholder="" aria-describedby="date">
+              <label for="fecha">Fecha</label>
+              <input value="<?= $data['fecha'] ?>" type="date" name="fecha" id="fecha" class="form-control" placeholder="" aria-describedby="fecha">
             </div>
             <div class="form-group">
-              <label for="user">Usuario</label>
-              <select name="user" id="user" class="form-control" placeholder="" aria-describedby="user">
-                <?php $qer=$bd->query("select * from users");
-                      while($dt = $qer->fetch()):
+              <label for="usuario">Usuario</label>
+              <select name="usuario" id="usuario" class="form-control" placeholder="" aria-describedby="usuario">
+                <?php $qer = $bd->query("SELECT * FROM usuarios");
+                      while ($dt = $qer->fetch()):
                 ?>
-                <option <?=($dt['id'] == $data['iduser'])?'selected':''?> value="<?= $dt['id']?>"><?= $dt['user']?></option>
-                <?php endwhile;?>
+                <option <?= ($dt['id'] == $data['usuario_id']) ? 'selected' : '' ?> value="<?= $dt['id'] ?>"><?= $dt['usuario'] ?></option>
+                <?php endwhile; ?>
               </select>
             </div>
             <div class="form-group">
-              <button name="submit" class="btn btn-warning btn-block"> Modificar</button>
+              <button name="submit" class="btn btn-warning btn-block">Modificar</button>
             </div>
           </form>
         </div>

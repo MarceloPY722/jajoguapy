@@ -51,12 +51,15 @@ if(isset($_POST['submit'])){
               </select>
             </div>
             <div class="form-group">
-              <label for="abastecimiento">Suministrar</label>
+              <label for="abastecimiento">Quien suministra</label>
               <select name="abastecimiento" id="abastecimiento" class="form-control" placeholder="" aria-describedby="abastecimiento">
-                <?php $qer = $bd->query("SELECT * FROM abastecimientos");
-                      while($dt = $qer->fetch()):
+                <?php 
+                $qer = $bd->query("SELECT a.id, a.numero, a.fecha, p.nombre AS proveedor_nombre 
+                                   FROM abastecimientos a 
+                                   JOIN proveedores p ON a.proveedor_id = p.id");
+                while($dt = $qer->fetch()):
                 ?>
-                <option value="<?= $dt['id'] ?>"><?= $dt['numero'] ?></option>
+                <option value="<?= $dt['id'] ?>"><?= $dt['proveedor_nombre'] ?> - <?= $dt['numero'] ?> - <?= $dt['fecha'] ?></option>
                 <?php endwhile; ?>
               </select>
             </div>

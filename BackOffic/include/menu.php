@@ -44,7 +44,7 @@ $dt = $rq->fetch();
                         <ul>
                             <li class="active"><a href="./index.php">Inicio</a></li>
                             <li><a href="./tienda.php">Tienda</a></li>
-                            <li><a href="#contacto">Contactos</a></li>
+                            <li><a href="/jajoguapy/BackOffic/contactanos.php">Contactos</a></li>
                             
                         
                         </ul>

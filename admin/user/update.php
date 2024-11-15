@@ -14,8 +14,9 @@ if(isset($_POST['submit'])){
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $telefono = $_POST['telefono'];
-    $req = $bd->prepare("UPDATE usuarios SET usuario=?, contrasena=?, correo=?, rol=?, nombre=?, apellido=?, telefono=? WHERE id=?");
-    $req->execute([$usuario, $contraseña, $correo, $rol, $nombre, $apellido, $telefono, $id]);
+    $nombre_mascota = $_POST['nombre_mascota']; // Nuevo campo
+    $req = $bd->prepare("UPDATE usuarios SET usuario=?, contrasena=?, correo=?, rol=?, nombre=?, apellido=?, telefono=?, nombre_mascota=? WHERE id=?");
+    $req->execute([$usuario, $contrasena, $correo, $rol, $nombre, $apellido, $telefono, $nombre_mascota, $id]);
     header('location: /Jajoguapy/admin/user/index.php?msg=updated');
 }
 ?>
@@ -59,6 +60,10 @@ if(isset($_POST['submit'])){
             <div class="form-group">
               <label for="telefono">Celular</label>
               <input value="<?= $data['telefono'] ?>" type="number" name="telefono" id="telefono" class="form-control" placeholder="" aria-describedby="telefono">
+            </div>
+            <div class="form-group">
+              <label for="nombre_mascota">Nombre de la Mascota</label>
+              <input value="<?= $data['nombre_mascota'] ?>" type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" placeholder="Nombre de su primera mascota" aria-describedby="nombre_mascota">
             </div>
             <div class="form-group">
               <label for="rol">Rol</label>

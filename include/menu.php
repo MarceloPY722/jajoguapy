@@ -29,7 +29,7 @@
                     <nav class="header__menu mobile-menu">
                         <ul>
                             <li class="active"><a href="./index.php">Inicio</a></li>
-                            <li><a href="#oferta">Oferta</a></li>
+                            <li><a href="/jajoguapy/index.php#oferta">Oferta</a></li>
                         </ul>
                     </nav>
                 </div>

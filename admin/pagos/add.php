@@ -6,28 +6,24 @@ $title = "Agregar Pago";
 // Procesar el formulario de agregar pago
 if (isset($_POST['submit'])) {
     $usuario_id = $_POST['usuario_id'];
-    $producto_id = $_POST['producto_id'];
+    $orden_id = $_POST['orden_id'];
     $cantidad = $_POST['cantidad'];
-    $precio = $_POST['precio'];
+    $preciototal = $_POST['preciototal'];
     $fecha_pago = $_POST['fecha_pago'];
     $email_pagos = $_POST['email_pagos'];
-    $tipo_tarjeta = $_POST['tipo_tarjeta'];
-    $numero_tarjeta = password_hash($_POST['numero_tarjeta'], PASSWORD_BCRYPT); // Hash del número de tarjeta
-    $vencimiento = $_POST['vencimiento'];
-    $cvv = password_hash($_POST['cvv'], PASSWORD_BCRYPT); // Hash del CVV
 
     $req = $bd->prepare("
-        INSERT INTO pagos (usuario_id, producto_id, cantidad, precio, fecha_pago, email_pagos, tipo_tarjeta, numero_tarjeta, vencimiento, cvv)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO pagos (usuario_id, orden_id, cantidad, preciototal, fecha_pago, email_pagos)
+        VALUES (?, ?, ?, ?, ?, ?)
     ");
-    $req->execute([$usuario_id, $producto_id, $cantidad, $precio, $fecha_pago, $email_pagos, $tipo_tarjeta, $numero_tarjeta, $vencimiento, $cvv]);
+    $req->execute([$usuario_id, $orden_id, $cantidad, $preciototal, $fecha_pago, $email_pagos]);
 
     header('location: /jajoguapy/admin/pagos/index.php?msg=added');
 }
 
-// Obtener la lista de usuarios y productos para los select
+// Obtener la lista de usuarios y órdenes para los select
 $usuarios = $bd->query("SELECT * FROM usuarios");
-$productos = $bd->query("SELECT * FROM productos");
+$ordenes = $bd->query("SELECT * FROM ordenes");
 ?>
 <?php include '../include/header.php'; ?>
 
@@ -59,10 +55,10 @@ $productos = $bd->query("SELECT * FROM productos");
               </select>
             </div>
             <div class="form-group">
-              <label for="producto_id">Producto</label>
-              <select name="producto_id" id="producto_id" class="form-control">
-                <?php while ($producto = $productos->fetch()): ?>
-                  <option value="<?= $producto['id'] ?>"><?= $producto['nombre'] ?></option>
+              <label for="orden_id">Orden</label>
+              <select name="orden_id" id="orden_id" class="form-control">
+                <?php while ($orden = $ordenes->fetch()): ?>
+                  <option value="<?= $orden['orden_id'] ?>"><?= $orden['orden_id'] ?></option>
                 <?php endwhile; ?>
               </select>
             </div>
@@ -71,8 +67,8 @@ $productos = $bd->query("SELECT * FROM productos");
               <input type="number" name="cantidad" id="cantidad" class="form-control">
             </div>
             <div class="form-group">
-              <label for="precio">Precio</label>
-              <input type="number" name="precio" id="precio" class="form-control">
+              <label for="preciototal">Precio Total</label>
+              <input type="number" name="preciototal" id="preciototal" class="form-control">
             </div>
             <div class="form-group">
               <label for="fecha_pago">Fecha de Pago</label>
@@ -81,22 +77,6 @@ $productos = $bd->query("SELECT * FROM productos");
             <div class="form-group">
               <label for="email_pagos">Email</label>
               <input type="email" name="email_pagos" id="email_pagos" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="tipo_tarjeta">Tipo de Tarjeta</label>
-              <input type="text" name="tipo_tarjeta" id="tipo_tarjeta" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="numero_tarjeta">Número de Tarjeta</label>
-              <input type="text" name="numero_tarjeta" id="numero_tarjeta" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="vencimiento">Vencimiento</label>
-              <input type="text" name="vencimiento" id="vencimiento" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="cvv">CVV</label>
-              <input type="text" name="cvv" id="cvv" class="form-control">
             </div>
             <div class="form-group">
               <button name="submit" class="btn btn-primary btn-block">Agregar</button>

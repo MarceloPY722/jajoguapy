@@ -9,10 +9,10 @@ if (isset($_GET['id'])) {
 
     // Obtener los datos del pago
     $req = $bd->prepare("
-        SELECT p.*, u.usuario, pr.nombre AS producto_nombre
+        SELECT p.*, u.usuario, o.orden_id
         FROM pagos p
         JOIN usuarios u ON p.usuario_id = u.id
-        JOIN productos pr ON p.producto_id = pr.id
+        JOIN ordenes o ON p.orden_id = o.orden_id
         WHERE p.id = ?
     ");
     $req->execute([$pago_id]);
@@ -31,27 +31,25 @@ if (isset($_GET['id'])) {
 // Procesar el formulario de edición
 if (isset($_POST['submit'])) {
     $usuario_id = $_POST['usuario_id'];
-    $producto_id = $_POST['producto_id'];
+    $orden_id = $_POST['orden_id'];
     $cantidad = $_POST['cantidad'];
     $precio = $_POST['precio'];
     $fecha_pago = $_POST['fecha_pago'];
     $email_pagos = $_POST['email_pagos'];
-    $tipo_tarjeta = $_POST['tipo_tarjeta'];
-    $vencimiento = $_POST['vencimiento'];
 
     $req = $bd->prepare("
         UPDATE pagos
-        SET usuario_id = ?, producto_id = ?, cantidad = ?, precio = ?, fecha_pago = ?, email_pagos = ?, tipo_tarjeta = ?, vencimiento = ?
+        SET usuario_id = ?, orden_id = ?, cantidad = ?, precio = ?, fecha_pago = ?, email_pagos = ?
         WHERE id = ?
     ");
-    $req->execute([$usuario_id, $producto_id, $cantidad, $precio, $fecha_pago, $email_pagos, $tipo_tarjeta, $vencimiento, $pago_id]);
+    $req->execute([$usuario_id, $orden_id, $cantidad, $precio, $fecha_pago, $email_pagos, $pago_id]);
 
     header('location: /jajoguapy/admin/pagos/index.php?msg=updated');
 }
 
-// Obtener la lista de usuarios y productos para los select
+// Obtener la lista de usuarios y órdenes para los select
 $usuarios = $bd->query("SELECT * FROM usuarios");
-$productos = $bd->query("SELECT * FROM productos");
+$ordenes = $bd->query("SELECT * FROM ordenes");
 ?>
 <?php include '../include/header.php'; ?>
 
@@ -83,10 +81,10 @@ $productos = $bd->query("SELECT * FROM productos");
               </select>
             </div>
             <div class="form-group">
-              <label for="producto_id">Producto</label>
-              <select name="producto_id" id="producto_id" class="form-control">
-                <?php while ($producto = $productos->fetch()): ?>
-                  <option value="<?= $producto['id'] ?>" <?= $producto['id'] == $pago['producto_id'] ? 'selected' : '' ?>><?= $producto['nombre'] ?></option>
+              <label for="orden_id">Orden</label>
+              <select name="orden_id" id="orden_id" class="form-control">
+                <?php while ($orden = $ordenes->fetch()): ?>
+                  <option value="<?= $orden['orden_id'] ?>" <?= $orden['orden_id'] == $pago['orden_id'] ? 'selected' : '' ?>><?= $orden['orden_id'] ?></option>
                 <?php endwhile; ?>
               </select>
             </div>
@@ -105,14 +103,6 @@ $productos = $bd->query("SELECT * FROM productos");
             <div class="form-group">
               <label for="email_pagos">Email</label>
               <input type="email" name="email_pagos" id="email_pagos" class="form-control" value="<?= $pago['email_pagos'] ?>">
-            </div>
-            <div class="form-group">
-              <label for="tipo_tarjeta">Tipo de Tarjeta</label>
-              <input type="text" name="tipo_tarjeta" id="tipo_tarjeta" class="form-control" value="<?= $pago['tipo_tarjeta'] ?>">
-            </div>
-            <div class="form-group">
-              <label for="vencimiento">Vencimiento</label>
-              <input type="text" name="vencimiento" id="vencimiento" class="form-control" value="<?= $pago['vencimiento'] ?>">
             </div>
             <div class="form-group">
               <button name="submit" class="btn btn-primary btn-block">Guardar Cambios</button>

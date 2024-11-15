@@ -7,8 +7,6 @@ $id = $_GET['id'];
 $req = $bd->prepare('SELECT * FROM productos WHERE id=?');
 $req->execute([$id]);
 $data = $req->fetch();
-
-
 $categoria_id = $data['categoria_id'];
 $req_categoria = $bd->prepare('SELECT descuentos FROM categorias WHERE id=?');
 $req_categoria->execute([$categoria_id]);
