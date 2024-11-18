@@ -16,7 +16,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $idu = $_SESSION['id'];
 $date = date("Y-m-d");
+
+function validateExpiryDate($expiryDate) {
+    $currentYear = date('Y');
+    $currentMonth = date('m');
+    $expiryYear = intval(substr($expiryDate, 0, 4));
+    $expiryMonth = intval(substr($expiryDate, 5, 2));
+
+    if ($expiryYear < $currentYear) {
+        return false;
+    } elseif ($expiryYear == $currentYear && $expiryMonth < $currentMonth) {
+        return false;
+    } elseif ($expiryYear > $currentYear + 14) {
+        return false;
+    }
+    return true;
+}
+
 if (isset($_POST['sub'])) {
+    $expiryDate = $_POST['expiry-date'];
+
+    if (!validateExpiryDate($expiryDate)) {
+        header("Location: error.php?msg=invalid_expiry_date");
+        exit();
+    }
+
     foreach ($products as $product) {
         $id = $product['id'];
         $Q = $product['quantity'];
@@ -37,12 +61,16 @@ if (isset($_POST['sub'])) {
     header('location: factura.php');
 }
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Pago</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/tailwindcss-colors.css">
     <link rel="stylesheet" href="./css/pay.css">
     <style>
-        
         .loading-overlay {
             display: none;
             position: fixed;
@@ -55,8 +83,8 @@ if (isset($_POST['sub'])) {
             justify-content: center;
             align-items: center;
             transition: background-color 1s ease;
-       }
-   
+        }
+
         .loading-container {
             display: flex;
             flex-direction: column;
@@ -81,12 +109,12 @@ if (isset($_POST['sub'])) {
             animation: spin 1s linear infinite;
         }
 
-        .success-message {
+        .success-message, .error-message {
             font-size: 48px;
-            color: #00b300;
             margin-top: 32px;
             display: flex;
             align-items: center;
+            color: white;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -97,7 +125,14 @@ if (isset($_POST['sub'])) {
             margin-right: 16px;
         }
 
-        .show-success {
+        .error-message svg {
+            width: 48px;
+            height: 48px;
+            margin-right: 16px;
+            fill: red;
+        }
+
+        .show-success, .show-error {
             opacity: 1;
         }
 
@@ -124,6 +159,12 @@ if (isset($_POST['sub'])) {
                 </svg>
                 Pago Exitoso!!
             </div>
+            <div class="error-message">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="red"/>
+                </svg>
+                Pago Rechazado
+            </div>
         </div>
     </div>
 
@@ -138,19 +179,19 @@ if (isset($_POST['sub'])) {
                     </div>
                     
                     <div class="payment-method">
-                        <input type="radio" name="payment-method" id="method-1" checked>
+                        <input type="radio" name="payment-method" id="method-1" checked onchange="setCardType('method-1')">
                         <label for="method-1" class="payment-method-item">
                             <img src="./img/pay/visa.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-2">
+                        <input type="radio" name="payment-method" id="method-2" onchange="setCardType('method-2')">
                         <label for="method-2" class="payment-method-item">
                             <img src="./img/pay/mastercard.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-3">
+                        <input type="radio" name="payment-method" id="method-3" onchange="setCardType('method-3')">
                         <label for="method-3" class="payment-method-item">
                             <img src="./img/pay/Discover.png" alt="">
                         </label>
-                        <input type="radio" name="payment-method" id="method-4">
+                        <input type="radio" name="payment-method" id="method-4" onchange="setCardType('method-4')">
                         <label for="method-4" class="payment-method-item">
                             <img src="./img/pay/American.png" alt="">
                         </label>
@@ -160,7 +201,7 @@ if (isset($_POST['sub'])) {
                         <label for="email" class="payment-form-label payment-form-label-required">Email Address</label>
                     </div>
                     <div class="payment-form-group">
-                        <input type="text" name="card-number" placeholder=" " class="payment-form-control" id="card-number" required>
+                        <input type="text" name="card-number" placeholder=" " class="payment-form-control" id="card-number" required oninput="validateCardNumber()">
                         <label for="card-number" class="payment-form-label payment-form-label-required">Número de Tarjeta</label>
                     </div>
                     <div class="payment-form-group-flex">
@@ -169,7 +210,7 @@ if (isset($_POST['sub'])) {
                             <label for="expiry-date" class="payment-form-label payment-form-label-required">Fecha de Vencimiento</label>
                         </div>
                         <div class="payment-form-group">
-                            <input type="text" name="cvv" placeholder=" " class="payment-form-control" id="cvv" required>
+                            <input type="text" name="cvv" placeholder=" " class="payment-form-control" id="cvv" required oninput="validateCVV()">
                             <label for="cvv" class="payment-form-label payment-form-label-required">CVV</label>
                         </div>
                     </div>
@@ -183,6 +224,7 @@ if (isset($_POST['sub'])) {
         </div>
     </section>
 
+    <script src="./validacion.js"></script>
     <script>
         document.getElementById('payment-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -190,10 +232,31 @@ if (isset($_POST['sub'])) {
             setTimeout(() => {
                 document.querySelector('.loading-text').classList.add('hide');
                 document.querySelector('.loading-spinner').classList.add('hide');
-                document.querySelector('.success-message').classList.add('show-success');
+                const expiryDate = document.getElementById('expiry-date').value;
+                const currentYear = new Date().getFullYear();
+                const currentMonth = new Date().getMonth() + 1;
+                const expiryYear = parseInt(expiryDate.split('-')[0]);
+                const expiryMonth = parseInt(expiryDate.split('-')[1]);
+
+                if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth) || expiryYear > currentYear + 14) {
+                    document.querySelector('.success-message').style.display = 'none';
+                    document.querySelector('.error-message').style.display = 'flex';
+                    document.querySelector('.error-message').classList.add('show-error');
+                } else {
+                    document.querySelector('.success-message').style.display = 'flex';
+                    document.querySelector('.error-message').style.display = 'none';
+                    document.querySelector('.success-message').classList.add('show-success');
+                }
                 setTimeout(() => {
-                    this.submit();
+                    if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth) || expiryYear > currentYear + 14) {
+                        window.location.href = 'orders.php';
+                    } else {
+                        this.submit();
+                    }
                 }, 3000);
             }, 10000);
         });
     </script>
+</body>
+</html>
+<script src="./js/validacion.js"></script>

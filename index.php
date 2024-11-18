@@ -13,7 +13,7 @@
                             <h2>Black Friday</h2>
                             <h3 style="color: yellow">Hasta el 60% De Descuento en Productos Seleccionados.</h3>
                             <p></p>
-                            <a href="#" class="primary-btn">Comprar Ya!!</a>
+                            <a href="./admin/login.php" class="primary-btn">Comprar Ya!!</a>
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -35,7 +35,7 @@
                             <h2>Juegos Digitales</h2>
                             <h3 style="color: yellow">Hasta el 40% De Descuento.</h3>
                             <p></p>
-                            <a href="#" class="primary-btn">Comprar Ya!!</a>
+                            <a href="./admin/login.php" class="primary-btn">Comprar Ya!!</a>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,6 @@
                 $descuento = $data['descuentos'];
                 $precio_con_descuento = $data['precio_venta'] * (1 - $descuento);
             ?>
-            <!--Seccion de productos nuevos agregados desde el dashboard-->
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="admin/img/<?= $data['imagen'] ?>">

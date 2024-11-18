@@ -98,10 +98,14 @@ foreach ($products as $product) {
                     </table>
                 </div>
                 <div class="factura__button">
-                    <a href="https://wa.me/595994275953?text=Hola,%20quiero%20enviar%20mi%20ubicación%20para%20el%20envío%20de%20mi%20pedido." target="_blank">
-                        <button class="enviar-ubicacion-btn">Enviar Ubicación</button>
-                    </a>
-                </div>
+    <a href="./index.php">
+        <button class="volver-inicio-btn">Volver al Inicio</button>
+    </a>
+    <a href="https://wa.me/595994275953?text=Hola,%20quiero%20enviar%20mi%20ubicación%20para%20el%20envío%20de%20mi%20pedido." target="_blank">
+        <button class="enviar-ubicacion-btn">Enviar Ubicación</button>
+    </a>
+</div>
+
 
 
             </div>
@@ -114,6 +118,22 @@ foreach ($products as $product) {
 <?php include './include/footer.php'?>
 
 <style>
+    .volver-inicio-btn {
+    padding: 15px 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+    margin-right: 15px; /* Espaciado entre los botones */
+}
+
+.volver-inicio-btn:hover {
+    background-color: #696969;
+}
+
 .styled-table {
     width: 100%;
     border-collapse: collapse;
