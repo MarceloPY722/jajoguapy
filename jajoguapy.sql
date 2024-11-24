@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 15, 2024 at 06:11 PM
+-- Generation Time: Nov 24, 2024 at 04:12 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -131,22 +131,6 @@ INSERT INTO `ciudades` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `envios`
---
-
-CREATE TABLE `envios` (
-  `id` int NOT NULL,
-  `direccion_envio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `departamento_id` int NOT NULL,
-  `ciudad` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telef_contacto` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `datos_adicionales` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pedidos`
 --
 
@@ -162,7 +146,8 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id`, `fecha`, `usuario_id`, `fecha_creacion`) VALUES
-(126, '2024-02-12', 52, '2024-11-11 14:32:16');
+(126, '2024-02-12', 52, '2024-11-11 14:32:16'),
+(140, '2024-11-24', 49, '2024-11-24 15:44:34');
 
 -- --------------------------------------------------------
 
@@ -177,6 +162,13 @@ CREATE TABLE `pedidos_productos` (
   `cantidad` int NOT NULL DEFAULT '0',
   `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pedidos_productos`
+--
+
+INSERT INTO `pedidos_productos` (`id`, `producto_id`, `pedido_id`, `cantidad`, `fecha_creacion`) VALUES
+(133, 20, 140, 1, '2024-11-24 15:44:34');
 
 -- --------------------------------------------------------
 
@@ -325,13 +317,6 @@ ALTER TABLE `ciudades`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `envios`
---
-ALTER TABLE `envios`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `departamento_id` (`departamento_id`);
-
---
 -- Indexes for table `pedidos`
 --
 ALTER TABLE `pedidos`
@@ -395,22 +380,16 @@ ALTER TABLE `ciudades`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `envios`
---
-ALTER TABLE `envios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT for table `pedidos_productos`
 --
 ALTER TABLE `pedidos_productos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `productos`
@@ -446,12 +425,6 @@ ALTER TABLE `abastecimientos`
 ALTER TABLE `abastecimientos_productos`
   ADD CONSTRAINT `FK__abastecimientos` FOREIGN KEY (`abastecimiento_id`) REFERENCES `abastecimientos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK__productos` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `envios`
---
-ALTER TABLE `envios`
-  ADD CONSTRAINT `envios_ibfk_2` FOREIGN KEY (`departamento_id`) REFERENCES `ciudades` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pedidos`
