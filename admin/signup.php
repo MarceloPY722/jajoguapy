@@ -16,10 +16,21 @@ if(isset($_POST['submit'])){
     $direccion_envio = $_POST['direccion_envio']; // Nuevo campo
     $nombre_mascota = $_POST['nombre_mascota']; // Nuevo campo
 
-    $req = $bd->prepare("INSERT INTO usuarios(usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id, direccion_envio, nombre_mascota) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $req->execute([$usuario, $contrasena, $email, "cliente", $nombre, $apellido, $telefono, $imagen, $ciudad, $direccion_envio, $nombre_mascota]);
-    header('Location: /Jajoguapy/admin/login.php');
-    exit(); // Asegurarse de que el script se detenga después de redirigir
+    // Verificar si el usuario ya existe en la base de datos
+    $stmt = $bd->prepare("SELECT COUNT(*) FROM usuarios WHERE usuario = ?");
+    $stmt->execute([$usuario]);
+    $userExists = $stmt->fetchColumn();
+
+    if ($userExists) {
+        // Si el usuario ya existe, mostrar un mensaje de error
+        $error_message = "ERROR! Este Usuario ya existe";
+    } else {
+        // Si el usuario no existe, proceder con la inserción
+        $req = $bd->prepare("INSERT INTO usuarios(usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id, direccion_envio, nombre_mascota) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $req->execute([$usuario, $contrasena, $email, "cliente", $nombre, $apellido, $telefono, $imagen, $ciudad, $direccion_envio, $nombre_mascota]);
+        header('Location: /Jajoguapy/admin/login.php');
+        exit(); 
+    }
 }
 ?>
 <?php include 'include/header2.php'; ?>
@@ -33,6 +44,13 @@ if(isset($_POST['submit'])){
         top: 0px;
         z-index: 1000;
         right: 0px;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+    .error-input {
+        border: 2px solid red !important;
     }
 </style>
 
@@ -67,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <a href="" class="logo">
                 <img src="/Jajoguapy/assets/logoW.png" width="300" alt="" />
             </a>
+            <span id="error-message" class="error-message"><?php if (isset($error_message)) echo $error_message; ?></span>
             <div class="login-progressbar-indicator">
                 <h3>43%</h3>
                 <span>logging in...</span>
@@ -142,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="input-group-addon">
                             <i class="entypo-user"></i>
                         </div>
-                        <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Usuario" autocomplete="off" />
+                        <input type="text" class="form-control <?php if (isset($error_message)) echo 'error-input'; ?>" name="usuario" id="usuario" placeholder="Usuario" autocomplete="off" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -176,18 +195,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                 </div>
                 <div class="form-group">
-                    <a href="login.php">Iniciar Sesion</a>
+                    
+                   <h3 class="btn btn-primary "> Ya tienes una cuenta? <br>
+                   <a href="login.php">Iniciar Sesion</a>
+                   </h3> 
                 </div>
             </form>
-            <div class="login-bottom-links">
-                <a href="forgot_password.php" class="link">Olvidaste tu constraseña?</a>
-                <br />
-            </div>
+           
         </div>
     </div>
 </div>
 
 <style>
+   .form-group a{
+    text-align: center;
+   }
     #ciudad option {
         background-color: black;
         color: white;

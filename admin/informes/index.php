@@ -44,7 +44,7 @@
         </thead>
         <tbody>
           <?php
-            // Consulta para obtener las últimas 10 actividades
+            
             $req = $bd->query("
               (SELECT 'Usuario Creado' AS accion, u.nombre AS usuario, u.fecha_creacion AS hora, 'Usuario creado' AS detalle
                FROM usuarios u
@@ -66,11 +66,8 @@
                FROM proveedores prov
                ORDER BY prov.fecha_creacion DESC
                LIMIT 10)
-              UNION
-              (SELECT 'Envío Realizado' AS accion, 'Admin' AS usuario, e.fecha_creacion AS hora, CONCAT('Envío #', e.id) AS detalle
-               FROM envios e
-               ORDER BY e.fecha_creacion DESC
-               LIMIT 10)
+      
+              
               UNION
               (SELECT 'Producto en Pedido' AS accion, 'Admin' AS usuario, pp.fecha_creacion AS hora, CONCAT('Producto #', pp.producto_id, ' en Pedido #', pp.pedido_id) AS detalle
                FROM pedidos_productos pp
