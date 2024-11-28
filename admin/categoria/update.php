@@ -16,11 +16,14 @@ if(isset($_POST['submit'])){
         $descuento_porcentaje = 0;
     }
 
-    // Convertir el porcentaje a un valor decimal (por ejemplo, 20% a 0.20)
     $descuento_porcentaje = $descuento_porcentaje / 100;
 
     $req = $bd->prepare("update categorias set nombre=?, descuentos=? WHERE id=?");
     $req->execute([$nombre, $descuento_porcentaje, $id]);
+
+    $update_products = $bd->prepare("UPDATE productos SET precio_con_descuento = precio_venta * (1 - ?) WHERE categoria_id = ?");
+    $update_products->execute([$descuento_porcentaje, $id]);
+
     header('location: /jajoguapy/admin/categoria/index.php?msg=updated');
 }
 ?>

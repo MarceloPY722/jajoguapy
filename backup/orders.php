@@ -43,17 +43,15 @@
                         <tbody id="cart-items">
                             <?php
                                 $id = $_SESSION['id'];
-                                $req = $bd->query("
-                                    SELECT c.cantidad, m.id, p.nombre, p.precio_venta, p.imagen, u.usuario,
-                                           p.precio_venta * (1 - cat.descuentos) AS precio_con_descuento
-                                    FROM pedidos_productos c
-                                    JOIN productos p ON c.producto_id = p.id
-                                    JOIN pedidos m ON c.pedido_id = m.id
-                                    JOIN usuarios u ON m.usuario_id = u.id
-                                    JOIN categorias cat ON p.categoria_id = cat.id
-                                    WHERE u.id = $id
-                                ");
-                                while($data = $req->fetch()):
+                                $req = $bd->query("SELECT c.cantidad, p.id, p.nombre, p.precio_venta, p.precio_con_descuento, p.imagen, u.usuario 
+                                                   FROM pedidos_productos c, productos p, pedidos m, usuarios u 
+                                                   WHERE c.producto_id = p.id AND c.pedido_id = m.id AND m.usuario_id = u.id 
+                                                   AND u.id = $id");
+                                while ($data = $req->fetch()):
+                                    // Si el precio con descuento no está definido, calcula el precio con descuento
+                                    if ($data['precio_con_descuento'] == 0) {
+                                        $data['precio_con_descuento'] = $data['precio_venta'];
+                                    }
                             ?>
                             <tr class="cart-item" data-price="<?= $data['precio_con_descuento'] ?>" data-product-id="<?= $data['id'] ?>">
                                 <td class="product__cart__item">
@@ -114,7 +112,7 @@
             let total = 0;
             const cartItems = document.querySelectorAll(".cart-item");
             cartItems.forEach(item => {
-                const itemTotal = parseFloat(item.querySelector(".item-total").textContent.replace(/[^0-9.-]+/g,""));
+                const itemTotal = parseFloat(item.querySelector(".item-total").textContent.replace(/[^0-9.-]+/g, ""));
                 total += itemTotal;
             });
             cartTotalElement.textContent = total;
@@ -132,7 +130,7 @@
             const cartItems = document.querySelectorAll(".cart-item");
             let products = [];
             cartItems.forEach(item => {
-                const productId = item.getAttribute("data-product-id"); 
+                const productId = item.getAttribute("data-product-id");
                 const productName = item.querySelector(".product__cart__item__text h5").textContent.trim();
                 const productQuantity = item.querySelector(".quantity-input").value;
                 const productPrice = item.getAttribute("data-price");
@@ -143,7 +141,7 @@
                     price: productPrice
                 });
             });
-            hiddenProductsInput.value = JSON.stringify(products); 
+            hiddenProductsInput.value = JSON.stringify(products);
 
             // Envía el formulario
             this.submit();

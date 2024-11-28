@@ -71,12 +71,6 @@
               <span class="title">Lista de pedidos de productos</span>
             </a>
           </li>
-          <li class="<?= ($title=="add pedidos_prods")?'active':'' ?>">
-            <a href="/jajoguapy/admin/pedidos_prods/add.php" style="color:#fff">
-              <i class="entypo-plus-squared"></i>
-              <span class="title">Agregar un pedido de producto</span>
-            </a>
-          </li>
         </ul>
       </li>
 

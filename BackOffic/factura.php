@@ -44,13 +44,13 @@ foreach ($products as $product) {
     };
 </script>
 
-<section class="factura-section">
+<section class="breadcrumb-option">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="factura__text">
-                    <h4>Factura de Compra</h4>
-                    <div class="factura__links">
+                <div class="breadcrumb__text">
+                    <h4>Factura</h4>
+                    <div class="breadcrumb__links">
                         <a href="./index.php">Inicio</a>
                         <span>Factura</span>
                     </div>

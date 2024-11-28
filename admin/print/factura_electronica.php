@@ -29,11 +29,12 @@ class PDF extends FPDF {
         $total = 0; 
 
         foreach($data as $row) {
-            $subtotal = $row['precio_venta'] * $row['cantidad'];
+            $precio_con_descuento = $row['precio_venta'] * (1 - $row['descuentos']);
+            $subtotal = $precio_con_descuento * $row['cantidad'];
             $total += $subtotal;
 
             $this->Cell(60, 10, $row['nombre'], 1, 0, 'L');
-            $this->Cell(30, 10, 'G ' . number_format($row['precio_venta'], 0, ',', '.'), 1, 0, 'R');
+            $this->Cell(30, 10, 'G ' . number_format($precio_con_descuento, 0, ',', '.'), 1, 0, 'R');
             $this->Cell(30, 10, $row['cantidad'], 1, 0, 'C');
             $this->Cell(30, 10, 'G ' . number_format($subtotal, 0, ',', '.'), 1, 1, 'R');
         }
@@ -52,7 +53,6 @@ class PDF extends FPDF {
         $this->Cell(0, 10, 'Apellido: ' . $user['apellido'], 0, 1, 'L');
         $this->Cell(0, 10, 'Metodo de Pago: Tarjeta D/C', 0, 1, 'L');
         $this->Cell(0, 10, 'Telefono: ' . $user['telefono'], 0, 1, 'L');
-        $this->Cell(0, 10, 'Direccion de Envio: ' . $user['direccion_envio'], 0, 1, 'L');
         $this->Ln(10);
     }
 
@@ -60,8 +60,9 @@ class PDF extends FPDF {
         $this->Ln(10); 
         $this->SetFont('Arial', 'I', 10);
         $this->SetTextColor(100, 100, 100); 
-        $this->MultiCell(0, 10, "Aviso: El envio de los productos se realizara dentro de los próximos 3 a 5 dias habiles. 
-        Para cualquier consulta sobre el estado del envio, comuniquese con nuestro servicio de atencion al cliente.");
+        $this->MultiCell(0, 10, "Aviso: El envio de los productos se realizara dentro de los proximos 3 a 5 dias habiles. 
+        Para cualquier consulta sobre el estado del envio, comuniquese con nuestro servicio de atencion al cliente.
+        No olvide Enviar este Documento mas la direccion de envio al WhatsApp +595 994 275 953");
     }
 }
 
@@ -70,7 +71,7 @@ if (!isset($_GET['usuario_id'])) {
 }
 
 $usuario_id = $_GET['usuario_id'];
-$req_user = $bd->prepare("SELECT nombre, apellido, telefono, direccion_envio FROM usuarios WHERE id = :usuario_id");
+$req_user = $bd->prepare("SELECT nombre, apellido, telefono FROM usuarios WHERE id = :usuario_id");
 $req_user->execute(['usuario_id' => $usuario_id]);
 $user = $req_user->fetch(PDO::FETCH_ASSOC);
 
@@ -78,13 +79,16 @@ $req = $bd->prepare("
     SELECT 
         p.nombre, 
         p.precio_venta, 
-        c.cantidad
+        c.cantidad,
+        cat.descuentos
     FROM 
         pedidos_productos c
     JOIN 
         productos p ON c.producto_id = p.id
     JOIN 
         pedidos m ON c.pedido_id = m.id
+    JOIN 
+        categorias cat ON p.categoria_id = cat.id
     WHERE 
         m.usuario_id = :usuario_id
 ");

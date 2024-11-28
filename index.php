@@ -59,7 +59,7 @@
         </div>
         <div class="row product__filter">
             <?php
-            $qer = $bd->query("SELECT p.*, c.descuentos FROM productos p JOIN categorias c ON p.categoria_id = c.id LIMIT 12");
+            $qer = $bd->query("SELECT p.*, c.descuentos FROM productos p JOIN categorias c ON p.categoria_id = c.id LIMIT 20");
             while($data = $qer->fetch()):
                 $descuento = $data['descuentos'];
                 $precio_con_descuento = $data['precio_venta'] * (1 - $descuento);
@@ -73,7 +73,7 @@
                     </div>
                     <div class="product__item__text">
                         <h6><?= $data['nombre'] ?></h6>
-                        <a href="shop-details.php?id=<?= $data['id'] ?>" class="add-cart">+ Agregar al Carrito</a>
+                        <a href="./admin/login.php" class="add-cart">+ Agregar al Carrito</a>
                         <div class="rating">
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
@@ -96,51 +96,6 @@
     </div>
 </section>
 
-<section class="categories spad" id="oferta">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="categories__text">
-                    <h2>Aprovecha <br /> <span>Esta Oferta por</span> <br /> Tiempo Limitado</h2>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="categories__hot__deal">
-                    <img src="img/phone1.png" alt="">
-                    <div class="hot__deal__sticker">
-                        <span>Sale por</span>
-                        <h5>₲ 2.500.000</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 offset-lg-1">
-                <div class="categories__deal__countdown">
-                    <span>Descuentos</span>
-                    <h2>Iphone 12 | 256 GB </h2>
-                    <div class="categories__deal__countdown__timer" id="countdown">
-                        <div class="cd-item">
-                            <span>3</span>
-                            <p>Days</p>
-                        </div>
-                        <div class="cd-item">
-                            <span>1</span>
-                            <p>Hours</p>
-                        </div>
-                        <div class="cd-item">
-                            <span>50</span>
-                            <p>Minutes</p>
-                        </div>
-                        <div class="cd-item">
-                            <span>18</span>
-                            <p>Seconds</p>
-                        </div>
-                    </div>
-                    <a href="./admin/login.php" class="primary-btn">Compra Ya!</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <?php include './include/footerfinal.php'; ?>
 

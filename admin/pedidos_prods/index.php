@@ -99,13 +99,6 @@ $req = $bd->query("
               Ver
             </a>
            
-            <a href="/jajoguapy/admin/pedidos_prods/delete.php?usuario_id=<?= $data['usuario_id'] ?>"
-              class="btn btn-danger btn-sm btn-icon icon-left">
-              <i class="entypo-cancel"></i>
-              Eliminar
-            </a>
-
-            <!-- Botón de impresión -->
             <a href="/jajoguapy/admin/print/imprimir_productos_pdf.php?usuario_id=<?= $data['usuario_id'] ?>"
               class="btn btn-success btn-sm btn-icon icon-left" target="_blank">
               <i class="entypo-print"></i>
