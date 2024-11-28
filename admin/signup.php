@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var telefono = document.getElementById('telefono').value;
         var ciudad = document.getElementById('ciudad').value;
         var imagen = document.getElementById('imagen').value;
-        var direccion_envio = document.getElementById('direccion_envio').value; // Nuevo campo
-        var nombre_mascota = document.getElementById('nombre_mascota').value; // Nuevo campo
+        var direccion_envio = document.getElementById('direccion_envio').value; 
+        var nombre_mascota = document.getElementById('nombre_mascota').value; 
 
         if (usuario.trim() === '' || email.trim() === '' || contraseña.trim() === '' || nombre.trim() === '' || apellido.trim() === '' || telefono.trim() === '' || ciudad.trim() === '' || imagen.trim() === '' || direccion_envio.trim() === '' || nombre_mascota.trim() === '') {
             event.preventDefault();
@@ -74,6 +74,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function mostrarProtocolo() {
+    alert("Este es el protocolo que usamos para el cambio de contraseña en caso de extravío.");
+}
 </script>
 
 <div class="login-container">
@@ -154,6 +158,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <i class="entypo-paw"></i>
                         </div>
                         <input type="text" class="form-control" name="nombre_mascota" id="nombre_mascota" placeholder="Nombre de su primera mascota" autocomplete="off" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info" onclick="mostrarProtocolo()">?</button>
+                        </span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -195,13 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                 </div>
                 <div class="form-group">
-                    
                    <h3 class="btn btn-primary "> Ya tienes una cuenta? <br>
                    <a href="login.php">Iniciar Sesion</a>
                    </h3> 
                 </div>
             </form>
-           
         </div>
     </div>
 </div>

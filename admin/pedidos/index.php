@@ -5,16 +5,9 @@
 
 
 <div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
-
-  <!-- Start Sidebar -->
   <?php include '../include/sidebar.php'; ?>
-  <!-- End Sidebar -->
   <div class="main-content">
-
-    <!-- Start Menu -->
     <?php include '../include/menu.php'; ?>
-    <!-- End Menu -->
     <hr />
 
     <div class="row">

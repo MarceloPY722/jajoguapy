@@ -72,7 +72,7 @@ var baseurl = '';
 						<div class="input-group-addon">
 							<i class="entypo-key"></i>
 						</div>
-						<input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Constraseña" autocomplete="off" />
+						<input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Contraseña" autocomplete="off" />
 					</div>
 				</div>
 				<div class="form-group">

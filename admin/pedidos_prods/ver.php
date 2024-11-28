@@ -39,7 +39,7 @@
                     $req = $bd->query("
                         SELECT 
                             p.nombre, 
-                            p.precio_venta, 
+                            p.precio_con_descuento, 
                             p.imagen, 
                             c.cantidad
                         FROM 
@@ -56,7 +56,7 @@
                     <tr>
                         <td><img width="100" src="../img/<?= $data['imagen'] ?>" alt=""></td>
                         <td><?= $data['nombre'] ?></td>
-                        <td><?= $data['precio_venta'] ?></td>
+                        <td><?= $data['precio_con_descuento'] ?></td>
                         <td><?= $data['cantidad'] ?></td>
                     </tr>
                     <?php
