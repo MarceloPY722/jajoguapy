@@ -55,7 +55,7 @@
                                 ");
                                 while($data = $req->fetch()):
                             ?>
-                            <tr class="cart-item" data-price="<?= $data['precio_con_descuento'] ?>" data-product-id="<?= $data['id'] ?>">
+                            <tr class="cart-item" data-price="<?= number_format($data['precio_con_descuento'], 0, '.', '') ?>" data-product-id="<?= $data['id'] ?>">
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic" style="width: 150px;">
                                         <img src="../admin/img/<?= $data['imagen'] ?>" alt="">
@@ -69,7 +69,7 @@
                                         <input type="number" class="quantity-input form-control" value="<?= $data['cantidad'] ?>" min="1" style="width: 70px;" readonly>
                                     </div>
                                 </td>
-                                <td class="cart__price">₲ <span class="item-total"><?= $data['precio_con_descuento'] * $data['cantidad'] ?></span></td>
+                                <td class="cart__price">₲ <span class="item-total"><?= number_format($data['precio_con_descuento'] * $data['cantidad'], 0, '.', '') ?></span></td>
                                 <td class="cart__close"><a href="DeleteOrder.php?id=<?= $data['id'] ?>"><i class="fa fa-close"></i></a></td>
                             </tr>
                             <?php endwhile; ?>
@@ -117,8 +117,8 @@
                 const itemTotal = parseFloat(item.querySelector(".item-total").textContent.replace(/[^0-9.-]+/g,""));
                 total += itemTotal;
             });
-            cartTotalElement.textContent = total;
-            hiddenTotalInput.value = total;
+            cartTotalElement.textContent = total.toFixed(0);
+            hiddenTotalInput.value = total.toFixed(0);
         }
 
         calculateCartTotal();
