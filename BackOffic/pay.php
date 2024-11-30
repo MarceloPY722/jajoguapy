@@ -214,17 +214,13 @@ if (isset($_POST['sub'])) {
                             <label for="cvv" class="payment-form-label payment-form-label-required">CVV</label>
                         </div>
                     </div>
-
                     <input type="hidden" name="total" value="<?= htmlspecialchars($total) ?>">
                     <input type="hidden" name="products" value='<?= htmlspecialchars(json_encode($products)) ?>'>
-
                     <button type="submit" class="payment-form-submit-button"><i class="ri-wallet-line"></i> Pagar</button>
                 </form>
             </div>
         </div>
     </section>
-
-    <script src="./validacion.js"></script>
     <script>
         document.getElementById('payment-form').addEventListener('submit', function(e) {
             e.preventDefault();

@@ -124,9 +124,8 @@
         calculateCartTotal();
 
         document.getElementById("payment-form").addEventListener("submit", function (e) {
-            e.preventDefault(); // Evita que el formulario se envíe de inmediato
-
-            // Asignar el total del carrito al campo oculto
+            e.preventDefault(); 
+            
             hiddenTotalInput.value = cartTotalElement.textContent.trim();
 
             const cartItems = document.querySelectorAll(".cart-item");
@@ -145,10 +144,7 @@
             });
             hiddenProductsInput.value = JSON.stringify(products); 
 
-            // Envía el formulario
             this.submit();
-
-            // Limpiar el carrito visualmente (sin eliminar de la base de datos)
             cartItemsContainer.innerHTML = "";
             cartTotalElement.textContent = "0";
         });
