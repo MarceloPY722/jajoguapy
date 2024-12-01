@@ -28,7 +28,8 @@
                 <div class="col-lg-9 col-md-9">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="./index.php">Inicio</a></li>
+                            <li class=""><a href="./index.php">Inicio</a></li>
+                            <li><a href="./tienda.php">Tienda</a></li>
                         </ul>
                     </nav>
                 </div>
