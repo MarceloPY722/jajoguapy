@@ -16,8 +16,9 @@ if(isset($_POST['submit'])){
     $rol = $_POST['rol'];
     $ciudad = $_POST['ciudad'];
     $nombre_mascota = $_POST['nombre_mascota']; // Nuevo campo
-    $req = $bd->prepare("INSERT INTO usuarios (usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id, nombre_mascota) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $req->execute([$usuario, $contrasena, $correo, $rol, $nombre, $apellido, $telefono, $image, $ciudad, $nombre_mascota]);
+    $direccion_envio = $_POST['direccion_envio']; // Nuevo campo
+    $req = $bd->prepare("INSERT INTO usuarios (usuario, contrasena, correo, rol, nombre, apellido, telefono, imagen, ciudad_id, nombre_mascota, direccion_envio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $req->execute([$usuario, $contrasena, $correo, $rol, $nombre, $apellido, $telefono, $image, $ciudad, $nombre_mascota, $direccion_envio]);
     header('location: /jajoguapy/admin/user/index.php?msg=added');
 }
 ?>
@@ -83,6 +84,10 @@ if(isset($_POST['submit'])){
             <div class="form-group">
               <label for="nombre_mascota">Nombre de la Mascota</label>
               <input type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" placeholder="Nombre de su primera mascota" aria-describedby="nombre_mascota">
+            </div>
+            <div class="form-group">
+              <label for="direccion_envio">Dirección de Envío</label>
+              <input type="text" name="direccion_envio" id="direccion_envio" class="form-control" placeholder="Dirección de envío" aria-describedby="direccion_envio">
             </div>
             <div class="form-group">
               <button name="submit" class="btn btn-primary btn-block">Agregar</button>
